@@ -1,0 +1,6 @@
+CC = gcc
+
+.c.o: ; ${CC} -c $*.c -I/uufs/icebox/sys/pkg/mpich/1.2.1/include
+
+hellompi: hellompi.o
+	${CC} hellompi.o -o hellompi -L/uufs/icebox/sys/pkg/mpich/1.2.1/lib -lmpich

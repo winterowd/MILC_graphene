@@ -1,0 +1,1031 @@
+SU3 with improved KS action
+Microcanonical simulation with refreshing
+MIMD version 7 $Name:  $
+Machine = Scalar processor, with 1 nodes
+Rational function hybrid Monte Carlo algorithm
+Options selected...
+Generic single precision
+C_GLOBAL_INLINE
+DBLSTORE_FN
+D_FN_GATHER13
+FEWSUMS
+KS_MULTICG=HYBRID
+KS_MULTIFF=FNMAT
+VECLENGTH=4
+INT_ALG=INT_OMELYAN
+HISQ_FORCE_FILTER=0.000050
+type 0 for no prompts  or 1 for prompts
+nx 6
+ny 6
+nz 6
+nt 6
+iseed 86658
+n_pseudo 4
+load_rhmc_params rationals.sample.su3_rhmc_hisq
+beta 7.4
+n_dyn_masses 2
+dyn_mass 0.0018 0.018 
+dyn_flavors 2 1 
+u0 0.89
+n_pseudo 4
+Loading rational function parameters for phi field 0
+naik_term_epsilon 0
+# New rational function
+# Approximation bounds are [1.000000e-15,9.000000e+01]
+# Precision of arithmetic is 75
+# Degree of the approximation is (9,9)
+# Approximating the function (x+4*0.001800^2)^(2/4) (x+4*0.018000^2)^(1/4) (x+4*0.200000^2)^(-3/4) (x+4*1.000000^2)^(0/4)
+# Converged at 2193 iterations, error = 7.142803e-07
+# Rational function for MD
+y_MD -2 -1 3 0 
+z_MD 4 4 4 4 
+m_MD 0.0018 0.018 0.2 1 
+order_MD 9
+Loading order 9 rational function approximation for MD:
+f(x) = (x+4*0.001800^2)^(-2/4) (x+4*0.018000^2)^(-1/4)
+       (x+4*0.200000^2)^(3/4) (x+4*1.000000^2)^(0/4)
+res_MD 1
+res_MD 0.00204485
+res_MD 0.00290467
+res_MD 0.00501695
+res_MD 0.00952897
+res_MD 0.0212092
+res_MD 0.0199943
+res_MD 0.0226512
+res_MD 0.0237042
+res_MD 0.0126097
+pole_MD 99.9
+pole_MD 1.43113e-05
+pole_MD 2.87352e-05
+pole_MD 8.40811e-05
+pole_MD 0.000281161
+pole_MD 0.000954202
+pole_MD 0.0029716
+pole_MD 0.0107592
+pole_MD 0.036199
+pole_MD 0.0989837
+# CHECK: f(1.000000e-15) = 3.703701e+02 = 6.085806e+01?
+# New rational function
+# Approximation bounds are [1.000000e-15,9.000000e+01]
+# Precision of arithmetic is 75
+# Degree of the approximation is (11,11)
+# Approximating the function (x+4*0.001800^2)^(2/8) (x+4*0.018000^2)^(1/8) (x+4*0.200000^2)^(-3/8) (x+4*1.000000^2)^(0/8)
+# Converged at 1854 iterations, error = 2.609214e-08
+# Rational function for GR
+y_GR 2 1 -3 0 
+z_GR 8 8 8 8 
+m_GR 0.0018 0.018 0.2 1 
+order_GR 11
+Loading order 11 rational function approximation for GR:
+f(x) = (x+4*0.001800^2)^(2/8) (x+4*0.018000^2)^(1/8)
+       (x+4*0.200000^2)^(-3/8) (x+4*1.000000^2)^(0/8)
+res_GR 1
+res_GR -6.1182e-08
+res_GR -3.19729e-07
+res_GR -1.28897e-06
+res_GR -4.91642e-06
+res_GR -1.78857e-05
+res_GR -8.96491e-05
+res_GR -0.000423832
+res_GR -0.00175458
+res_GR -0.00654152
+res_GR -0.0192293
+res_GR -0.0317711
+pole_GR 99.9
+pole_GR 1.60773e-05
+pole_GR 3.10382e-05
+pole_GR 7.66803e-05
+pole_GR 0.000210211
+pole_GR 0.000600022
+pole_GR 0.00186906
+pole_GR 0.00519622
+pole_GR 0.0143729
+pole_GR 0.0377859
+pole_GR 0.0865726
+pole_GR 0.146356
+# CHECK: f(1.000000e-15) = 5.196153e-02 = 1.281861e-01?
+# Rational function for FA
+y_FA -2 -1 3 0 
+z_FA 8 8 8 8 
+m_FA 0.0018 0.018 0.2 1 
+order_FA 11
+Loading order 11 rational function approximation for FA:
+f(x) = (x+4*0.001800^2)^(-2/8) (x+4*0.018000^2)^(-1/8)
+       (x+4*0.200000^2)^(3/8) (x+4*1.000000^2)^(0/8)
+res_FA 1
+res_FA 3.67927e-05
+res_FA 8.34287e-05
+res_FA 0.000179646
+res_FA 0.000397614
+res_FA 0.000916432
+res_FA 0.00260832
+res_FA 0.00468862
+res_FA 0.00831646
+res_FA 0.0138142
+res_FA 0.0178882
+res_FA 0.0109047
+pole_FA 99.9
+pole_FA 1.45263e-05
+pole_FA 2.55335e-05
+pole_FA 6.03301e-05
+pole_FA 0.000162506
+pole_FA 0.000460594
+pole_FA 0.00131886
+pole_FA 0.00353418
+pole_FA 0.00984542
+pole_FA 0.0265604
+pole_FA 0.0650361
+pole_FA 0.126233
+Loading rational function parameters for phi field 1
+# CHECK: f(1.000000e-15) = 1.924501e+01 = 7.801158e+00?
+naik_term_epsilon 0
+# New rational function
+# Approximation bounds are [1.000000e-15,9.000000e+01]
+# Precision of arithmetic is 65
+# Degree of the approximation is (7,7)
+# Approximating the function (x+4*0.200000^2)^(1/4) (x+4*1.000000^2)^(0/4) (x+4*1.000000^2)^(0/4) (x+4*1.000000^2)^(0/4)
+# Converged at 327 iterations, error = 2.398230e-07
+# Rational function for MD
+y_MD -1 0 0 0 
+z_MD 4 4 4 4 
+m_MD 0.2 1 1 1 
+order_MD 7
+Loading order 7 rational function approximation for MD:
+f(x) = (x+4*0.200000^2)^(-1/4) (x+4*1.000000^2)^(0/4)
+       (x+4*1.000000^2)^(0/4) (x+4*1.000000^2)^(0/4)
+res_MD 0.14923
+res_MD 0.046061
+res_MD 0.1138
+res_MD 0.274536
+res_MD 0.687619
+res_MD 1.83201
+res_MD 5.87481
+res_MD 38.0862
+pole_MD 99.9
+pole_MD 0.185283
+pole_MD 0.375399
+pole_MD 1.05812
+pole_MD 3.40313
+pole_MD 11.7405
+pole_MD 45.73
+pole_MD 283.916
+# CHECK: f(1.000000e-15) = 1.581138e+00 = 1.581139e+00?
+# New rational function
+# Approximation bounds are [1.000000e-15,9.000000e+01]
+# Precision of arithmetic is 65
+# Degree of the approximation is (9,9)
+# Approximating the function (x+4*0.200000^2)^(1/8) (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8)
+# Converged at 422 iterations, error = 1.700228e-09
+# Rational function for GR
+y_GR 1 0 0 0 
+z_GR 8 8 8 8 
+m_GR 0.2 1 1 1 
+order_GR 9
+Loading order 9 rational function approximation for GR:
+f(x) = (x+4*0.200000^2)^(1/8) (x+4*1.000000^2)^(0/8)
+       (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8)
+res_GR 2.73277
+res_GR -0.00512886
+res_GR -0.0204789
+res_GR -0.0639514
+res_GR -0.192686
+res_GR -0.585195
+res_GR -1.85803
+res_GR -6.68946
+res_GR -34.4017
+res_GR -617.898
+pole_GR 99.9
+pole_GR 0.186425
+pole_GR 0.315826
+pole_GR 0.679106
+pole_GR 1.64209
+pole_GR 4.20254
+pole_GR 11.2153
+pole_GR 32.0724
+pole_GR 110.326
+pole_GR 764.416
+# CHECK: f(1.000000e-15) = 7.952707e-01 = 7.952707e-01?
+# Rational function for FA
+y_FA -1 0 0 0 
+z_FA 8 8 8 8 
+m_FA 0.2 1 1 1 
+order_FA 9
+Loading order 9 rational function approximation for FA:
+f(x) = (x+4*0.200000^2)^(-1/8) (x+4*1.000000^2)^(0/8)
+       (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8)
+res_FA 0.365929
+res_FA 0.0109316
+res_FA 0.0292903
+res_FA 0.0678756
+res_FA 0.157093
+res_FA 0.370027
+res_FA 0.906451
+res_FA 2.45234
+res_FA 8.71503
+res_FA 75.8971
+pole_FA 99.9
+pole_FA 0.178875
+pole_FA 0.290944
+pole_FA 0.612037
+pole_FA 1.46486
+pole_FA 3.72845
+pole_FA 9.8933
+pole_FA 27.9493
+pole_FA 92.735
+pole_FA 546.062
+Loading rational function parameters for phi field 2
+# CHECK: f(1.000000e-15) = 1.257433e+00 = 1.257433e+00?
+naik_term_epsilon 0
+# New rational function
+# Approximation bounds are [1.000000e-15,9.000000e+01]
+# Precision of arithmetic is 65
+# Degree of the approximation is (7,7)
+# Approximating the function (x+4*0.200000^2)^(1/4) (x+4*1.000000^2)^(0/4) (x+4*1.000000^2)^(0/4) (x+4*1.000000^2)^(0/4)
+# Converged at 327 iterations, error = 2.398230e-07
+# Rational function for MD
+y_MD -1 0 0 0 
+z_MD 4 4 4 4 
+m_MD 0.2 1 1 1 
+order_MD 7
+Loading order 7 rational function approximation for MD:
+f(x) = (x+4*0.200000^2)^(-1/4) (x+4*1.000000^2)^(0/4)
+       (x+4*1.000000^2)^(0/4) (x+4*1.000000^2)^(0/4)
+res_MD 0.14923
+res_MD 0.046061
+res_MD 0.1138
+res_MD 0.274536
+res_MD 0.687619
+res_MD 1.83201
+res_MD 5.87481
+res_MD 38.0862
+pole_MD 99.9
+pole_MD 0.185283
+pole_MD 0.375399
+pole_MD 1.05812
+pole_MD 3.40313
+pole_MD 11.7405
+pole_MD 45.73
+pole_MD 283.916
+# CHECK: f(1.000000e-15) = 1.581138e+00 = 1.581139e+00?
+# New rational function
+# Approximation bounds are [1.000000e-15,9.000000e+01]
+# Precision of arithmetic is 65
+# Degree of the approximation is (9,9)
+# Approximating the function (x+4*0.200000^2)^(1/8) (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8)
+# Converged at 422 iterations, error = 1.700228e-09
+# Rational function for GR
+y_GR 1 0 0 0 
+z_GR 8 8 8 8 
+m_GR 0.2 1 1 1 
+order_GR 9
+Loading order 9 rational function approximation for GR:
+f(x) = (x+4*0.200000^2)^(1/8) (x+4*1.000000^2)^(0/8)
+       (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8)
+res_GR 2.73277
+res_GR -0.00512886
+res_GR -0.0204789
+res_GR -0.0639514
+res_GR -0.192686
+res_GR -0.585195
+res_GR -1.85803
+res_GR -6.68946
+res_GR -34.4017
+res_GR -617.898
+pole_GR 99.9
+pole_GR 0.186425
+pole_GR 0.315826
+pole_GR 0.679106
+pole_GR 1.64209
+pole_GR 4.20254
+pole_GR 11.2153
+pole_GR 32.0724
+pole_GR 110.326
+pole_GR 764.416
+# CHECK: f(1.000000e-15) = 7.952707e-01 = 7.952707e-01?
+# Rational function for FA
+y_FA -1 0 0 0 
+z_FA 8 8 8 8 
+m_FA 0.2 1 1 1 
+order_FA 9
+Loading order 9 rational function approximation for FA:
+f(x) = (x+4*0.200000^2)^(-1/8) (x+4*1.000000^2)^(0/8)
+       (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8)
+res_FA 0.365929
+res_FA 0.0109316
+res_FA 0.0292903
+res_FA 0.0678756
+res_FA 0.157093
+res_FA 0.370027
+res_FA 0.906451
+res_FA 2.45234
+res_FA 8.71503
+res_FA 75.8971
+pole_FA 99.9
+pole_FA 0.178875
+pole_FA 0.290944
+pole_FA 0.612037
+pole_FA 1.46486
+pole_FA 3.72845
+pole_FA 9.8933
+pole_FA 27.9493
+pole_FA 92.735
+pole_FA 546.062
+Loading rational function parameters for phi field 3
+# CHECK: f(1.000000e-15) = 1.257433e+00 = 1.257433e+00?
+# New rational function
+# Approximation bounds are [1.000000e-15,9.000000e+01]
+# Precision of arithmetic is 65
+# Degree of the approximation is (7,7)
+# Approximating the function (x+4*0.200000^2)^(1/4) (x+4*1.000000^2)^(0/4) (x+4*1.000000^2)^(0/4) (x+4*1.000000^2)^(0/4)
+# Converged at 327 iterations, error = 2.398230e-07
+naik_term_epsilon 0
+# Rational function for MD
+y_MD -1 0 0 0 
+z_MD 4 4 4 4 
+m_MD 0.2 1 1 1 
+order_MD 7
+Loading order 7 rational function approximation for MD:
+f(x) = (x+4*0.200000^2)^(-1/4) (x+4*1.000000^2)^(0/4)
+       (x+4*1.000000^2)^(0/4) (x+4*1.000000^2)^(0/4)
+res_MD 0.14923
+res_MD 0.046061
+res_MD 0.1138
+res_MD 0.274536
+res_MD 0.687619
+res_MD 1.83201
+res_MD 5.87481
+res_MD 38.0862
+pole_MD 99.9
+pole_MD 0.185283
+pole_MD 0.375399
+pole_MD 1.05812
+pole_MD 3.40313
+pole_MD 11.7405
+pole_MD 45.73
+pole_MD 283.916
+# CHECK: f(1.000000e-15) = 1.581138e+00 = 1.581139e+00?
+# New rational function
+# Approximation bounds are [1.000000e-15,9.000000e+01]
+# Precision of arithmetic is 65
+# Degree of the approximation is (9,9)
+# Approximating the function (x+4*0.200000^2)^(1/8) (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8)
+# Converged at 422 iterations, error = 1.700228e-09
+# Rational function for GR
+y_GR 1 0 0 0 
+z_GR 8 8 8 8 
+m_GR 0.2 1 1 1 
+order_GR 9
+Loading order 9 rational function approximation for GR:
+f(x) = (x+4*0.200000^2)^(1/8) (x+4*1.000000^2)^(0/8)
+       (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8)
+res_GR 2.73277
+res_GR -0.00512886
+res_GR -0.0204789
+res_GR -0.0639514
+res_GR -0.192686
+res_GR -0.585195
+res_GR -1.85803
+res_GR -6.68946
+res_GR -34.4017
+res_GR -617.898
+pole_GR 99.9
+pole_GR 0.186425
+pole_GR 0.315826
+pole_GR 0.679106
+pole_GR 1.64209
+pole_GR 4.20254
+pole_GR 11.2153
+pole_GR 32.0724
+pole_GR 110.326
+pole_GR 764.416
+# CHECK: f(1.000000e-15) = 7.952707e-01 = 7.952707e-01?
+# Rational function for FA
+y_FA -1 0 0 0 
+z_FA 8 8 8 8 
+m_FA 0.2 1 1 1 
+order_FA 9
+Loading order 9 rational function approximation for FA:
+f(x) = (x+4*0.200000^2)^(-1/8) (x+4*1.000000^2)^(0/8)
+       (x+4*1.000000^2)^(0/8) (x+4*1.000000^2)^(0/8)
+res_FA 0.365929
+res_FA 0.0109316
+res_FA 0.0292903
+res_FA 0.0678756
+res_FA 0.157093
+res_FA 0.370027
+res_FA 0.906451
+res_FA 2.45234
+res_FA 8.71503
+res_FA 75.8971
+pole_FA 99.9
+pole_FA 0.178875
+pole_FA 0.290944
+pole_FA 0.612037
+pole_FA 1.46486
+pole_FA 3.72845
+pole_FA 9.8933
+pole_FA 27.9493
+pole_FA 92.735
+pole_FA 546.062
+Maximum rational func order is 11
+Naik term correction structure of multi_x:
+n_naiks 1
+n_pseudo_naik[0]=4
+n_orders_naik[0]=30
+masses_naik[0]=0.000000
+eps_naik[0]=0.000000
+n_order_naik_total 30
+LAYOUT = Hypercubes, options = hyper_prime,
+ON EACH NODE 6 x 6 x 6 x 6
+Mallocing 1.9 MBytes per node for lattice
+Made lattice
+Made nn gathers
+Made 3nn gathers
+Finished setup
+
+
+warms 0
+trajecs 10
+traj_between_meas 1
+microcanonical_time_step 0.2
+steps_per_trajectory 10
+cgresid_md_fa_gr 0.0005 0.0001 0.0001 
+max_multicg_md_fa_gr 2500 2500 2500 
+cgprec_md_fa_gr 2 2 2 
+cgresid_md_fa_gr 5e-06 1e-06 1e-06 
+max_multicg_md_fa_gr 2500 2500 2500 
+cgprec_md_fa_gr 2 2 2 
+cgresid_md_fa_gr 5e-06 1e-06 1e-06 
+max_multicg_md_fa_gr 2500 2500 2500 
+cgprec_md_fa_gr 2 2 2 
+cgresid_md_fa_gr 5e-06 1e-06 1e-06 
+max_multicg_md_fa_gr 2500 2500 2500 
+cgprec_md_fa_gr 2 2 2 
+prec_ff 1
+error_for_propagator 1e-06
+max_cg_prop 500
+max_cg_prop_restarts 5
+reload_serial ../binary_samples/lat.sample.l6666.hisq
+forget 
+Restored binary gauge configuration serially from file ../binary_samples/lat.sample.l6666.hisq
+Time stamp Mon Nov 19 18:42:42 2007
+Checksums c9687fe2 b52bd146 OK
+Time to reload gauge configuration = 7.741928e-03
+CHECK PLAQ: 1.840395e+00 1.859751e+00
+CHECK NERSC LINKTR: 1.686646e-01 CKSUM: 8e705331
+Unitarity checked.  Max deviation 2.38e-07
+Time to check unitarity = 1.973152e-03
+Symanzik 1x1 + 1x2 + 1x1x1 action
+gauge_action: total_dyn_flavors = 3
+loop coefficients: nloop rep loop_coeff  multiplicity
+                    0 0      1.000000e+00     6
+                    1 0      -6.773115e-02     12
+                    2 0      -6.377657e-03     16
+"O(a^2): couplings(pi)=0, Naik term, No O(a^2) errors, tadpole weights"
+path coefficients: npath  path_coeff  multiplicity
+                    0      6.250000e-01     8
+                    1      -5.260279e-02     8
+                    2      -7.890417e-02     48
+                    3      2.490348e-02     192
+                    4      -5.239970e-03     384
+                    5      -9.961390e-02     48
+WARMUPS COMPLETED
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 1.9481611428e+03
+GRSOURCE: sum = 1.9973772362e+03
+GRSOURCE: sum = 1.9811251848e+03
+GRSOURCE: sum = 1.9866283190e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  -1.13785634160042e+02  7.91329143787920e+03  2.45123960093311e+04
+DG = 1.671289e+04, DH = -1.137856e+02, DF = 7.913291e+03, D = 2.451240e+04
+PLAQUETTE ACTION: -3.484231e+04
+ACTION: g,h,f = 1.72739829714379e+04  -1.89158551275730e+02  7.93794539582729e+03  2.50227698159895e+04
+DG = 5.610928e+02, DH = -7.537292e+01, DF = 2.465396e+01, D = 5.103738e+02
+REJECT: delta S = 5.103738e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     -1.912811e-03  6.534107e-03  -1.541682e-02  -1.541696e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.449929e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     -7.438360e-03  5.470977e-02  3.947691e-02  3.947679e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.528361e+00 ( 1 of 1 )
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 2.0109329605e+03
+GRSOURCE: sum = 1.9480004816e+03
+GRSOURCE: sum = 1.9578632913e+03
+GRSOURCE: sum = 1.9775977936e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  1.32052681684494e+02  7.89439426530898e+03  2.47393371526054e+04
+DG = -5.610928e+02, DH = 3.212112e+02, DF = -4.355113e+01, D = -2.834327e+02
+PLAQUETTE ACTION: -3.440496e+04
+ACTION: g,h,f = 1.76165464544940e+04  -2.14740979164839e+02  7.93037799941003e+03  2.53321834747392e+04
+DG = 9.036562e+02, DH = -3.467937e+02, DF = 3.598373e+01, D = 5.928463e+02
+REJECT: delta S = 5.928463e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     -3.517465e-04  5.122899e-03  2.761819e-02  2.761807e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.489540e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     5.127417e-02  -5.203719e-04  -2.639390e-02  -2.639410e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.498222e+00 ( 1 of 1 )
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 2.0270514286e+03
+GRSOURCE: sum = 1.9613808332e+03
+GRSOURCE: sum = 1.8682719609e+03
+GRSOURCE: sum = 1.8707714153e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  -1.20098753273487e+01  7.72747530989349e+03  2.44283556401781e+04
+DG = -9.036562e+02, DH = 2.027311e+02, DF = -2.029027e+02, D = -9.038278e+02
+PLAQUETTE ACTION: -3.481220e+04
+ACTION: g,h,f = 1.72857149522344e+04  -5.95794408321381e+01  7.75528001658618e+03  2.49814155279884e+04
+DG = 5.728247e+02, DH = -4.756957e+01, DF = 2.780471e+01, D = 5.530599e+02
+REJECT: delta S = 5.530599e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     -1.467974e-02  1.965722e-02  2.044544e-03  2.044451e-03 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.503824e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     2.399147e-02  2.752137e-02  -1.510968e-02  -1.510963e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.554079e+00 ( 1 of 1 )
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 1.8402848834e+03
+GRSOURCE: sum = 1.9351427752e+03
+GRSOURCE: sum = 1.9461301843e+03
+GRSOURCE: sum = 1.9276951853e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  1.82383108228445e+02  7.64925276298821e+03  2.45445260768286e+04
+DG = -5.728247e+02, DH = 2.419625e+02, DF = -1.060273e+02, D = -4.368895e+02
+PLAQUETTE ACTION: -3.455764e+04
+ACTION: g,h,f = 1.74893686014188e+04  -1.36263746097684e+02  7.67757452540845e+03  2.50306793807296e+04
+DG = 7.764784e+02, DH = -3.186469e+02, DF = 2.832176e+01, D = 4.861533e+02
+REJECT: delta S = 4.861533e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     -2.053663e-02  2.540837e-02  -2.889802e-02  -2.889841e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.536981e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     4.107296e-02  7.605002e-03  2.694878e-02  2.694863e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.505265e+00 ( 1 of 1 )
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 1.9312329540e+03
+GRSOURCE: sum = 1.9942867015e+03
+GRSOURCE: sum = 2.0433650329e+03
+GRSOURCE: sum = 1.9564915015e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  -1.77913027256727e+00  7.92537587397546e+03  2.46364869493148e+04
+DG = -7.764784e+02, DH = 1.344846e+02, DF = 2.478013e+02, D = -3.941924e+02
+PLAQUETTE ACTION: -3.476632e+04
+ACTION: g,h,f = 1.72937088614753e+04  -9.54514977335930e+01  7.96492899397016e+03  2.51631863577118e+04
+DG = 5.808187e+02, DH = -9.367237e+01, DF = 3.955312e+01, D = 5.266994e+02
+REJECT: delta S = 5.266994e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     -6.367746e-02  6.826446e-02  -2.619612e-02  -2.619638e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.427951e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     2.940601e-02  1.389597e-02  3.917584e-03  3.917471e-03 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.417163e+00 ( 1 of 1 )
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 1.8750575737e+03
+GRSOURCE: sum = 1.8806242803e+03
+GRSOURCE: sum = 1.9119140384e+03
+GRSOURCE: sum = 1.9149887032e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  1.00007392227650e+02  7.58258413542807e+03  2.43954817332677e+04
+DG = -5.808187e+02, DH = 1.954589e+02, DF = -3.823449e+02, D = -7.677046e+02
+PLAQUETTE ACTION: -3.486272e+04
+ACTION: g,h,f = 1.72526944465832e+04  5.73638196736574e+01  7.60657988284528e+03  2.49166381491021e+04
+DG = 5.398042e+02, DH = -4.264357e+01, DF = 2.399575e+01, D = 5.211564e+02
+REJECT: delta S = 5.211564e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     4.433498e-03  2.259196e-04  9.619977e-03  9.620095e-03 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.514741e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     4.019304e-02  4.205627e-03  2.231902e-02  2.231909e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.499269e+00 ( 1 of 1 )
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 1.9052125568e+03
+GRSOURCE: sum = 1.9866599393e+03
+GRSOURCE: sum = 1.9397775078e+03
+GRSOURCE: sum = 1.9484530746e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  -3.46979322582483e+01  7.78010308520496e+03  2.44582953585587e+04
+DG = -5.398042e+02, DH = -9.206175e+01, DF = 1.735232e+02, D = -4.583428e+02
+PLAQUETTE ACTION: -3.496707e+04
+ACTION: g,h,f = 1.71442328394188e+04  3.47573249936104e+01  7.78002845689654e+03  2.49590186213089e+04
+DG = 4.313426e+02, DH = 6.945526e+01, DF = -7.462831e-02, D = 5.007233e+02
+REJECT: delta S = 5.007233e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     -1.297766e-03  6.010988e-03  3.951578e-02  3.951597e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.525962e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     3.349084e-02  1.481789e-02  -9.365386e-03  -9.365177e-03 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.531805e+00 ( 1 of 1 )
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 1.9141957060e+03
+GRSOURCE: sum = 1.9309209903e+03
+GRSOURCE: sum = 1.9399936361e+03
+GRSOURCE: sum = 1.9494868583e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  -2.46023832440376e+02  7.73459724573791e+03  2.42014636189095e+04
+DG = -4.313426e+02, DH = -2.807812e+02, DF = -4.543121e+01, D = -7.575550e+02
+PLAQUETTE ACTION: -3.495838e+04
+ACTION: g,h,f = 1.71637477414593e+04  -2.21304814726114e+02  7.77029250815883e+03  2.47127354348921e+04
+DG = 4.508575e+02, DH = 2.471902e+01, DF = 3.569526e+01, D = 5.112718e+02
+REJECT: delta S = 5.112718e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     8.930001e-03  -4.473319e-03  -2.954918e-02  -2.954905e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.461368e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     3.540689e-02  1.501046e-02  1.024265e-02  1.024257e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.579425e+00 ( 1 of 1 )
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 1.9435726762e+03
+GRSOURCE: sum = 1.9263529813e+03
+GRSOURCE: sum = 2.0139740716e+03
+GRSOURCE: sum = 2.0463613924e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  1.22840683758259e+01  7.93026078460366e+03  2.46554350585914e+04
+DG = -4.508575e+02, DH = 2.335889e+02, DF = 1.599683e+02, D = -5.730038e+01
+PLAQUETTE ACTION: -3.488124e+04
+ACTION: g,h,f = 1.72118617000930e+04  8.76059078276157e+01  7.91676515553892e+03  2.52162327634596e+04
+DG = 4.989715e+02, DH = 7.532184e+01, DF = -1.349563e+01, D = 5.607977e+02
+REJECT: delta S = 5.607977e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     3.493769e-02  -3.000615e-02  2.450705e-02  2.450654e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.486672e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     -2.636732e-03  5.061741e-02  1.026097e-02  1.026087e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.451321e+00 ( 1 of 1 )
+Omelyan integration, steps= 10 eps= 2.000000e-01 lambda= 8.000000e-01
+GRSOURCE: sum = 2.0100337154e+03
+GRSOURCE: sum = 1.9075326317e+03
+GRSOURCE: sum = 1.9943252322e+03
+GRSOURCE: sum = 1.9653175591e+03
+PLAQUETTE ACTION: -3.548588e+04
+ACTION: g,h,f = 1.67128902056120e+04  3.53414306342602e+01  7.87720906268060e+03  2.46254406989268e+04
+DG = -4.989715e+02, DH = -5.226448e+01, DF = -3.955609e+01, D = -5.907921e+02
+PLAQUETTE ACTION: -3.466794e+04
+ACTION: g,h,f = 1.74139996946581e+04  -2.01429934769869e+02  7.93465841347724e+03  2.51472281733654e+04
+DG = 7.011095e+02, DH = -2.367714e+02, DF = 5.744935e+01, D = 5.217875e+02
+REJECT: delta S = 5.217875e+02
+PLAQ:	1.840395	1.859751
+P_LOOP:	3.164546e-01	-3.882708e-02
+G_LOOP:  0  0  4   	1.876471e+00	( 0 1 7 6  )
+G_LOOP:  0  1  4   	1.812574e+00	( 0 2 7 5  )
+G_LOOP:  0  2  4   	1.867580e+00	( 0 3 7 4  )
+G_LOOP:  0  3  4   	1.832141e+00	( 1 2 6 5  )
+G_LOOP:  0  4  4   	1.849527e+00	( 1 3 6 4  )
+G_LOOP:  0  5  4   	1.862146e+00	( 2 3 5 4  )
+G_LOOP:  1  0  6   	1.210104e+00	( 0 0 1 7 7 6  )
+G_LOOP:  1  1  6   	1.140105e+00	( 0 0 2 7 7 5  )
+G_LOOP:  1  2  6   	1.172777e+00	( 0 0 3 7 7 4  )
+G_LOOP:  1  3  6   	1.199973e+00	( 1 1 0 6 6 7  )
+G_LOOP:  1  4  6   	1.155618e+00	( 1 1 2 6 6 5  )
+G_LOOP:  1  5  6   	1.168489e+00	( 1 1 3 6 6 4  )
+G_LOOP:  1  6  6   	1.138723e+00	( 2 2 0 5 5 7  )
+G_LOOP:  1  7  6   	1.153291e+00	( 2 2 1 5 5 6  )
+G_LOOP:  1  8  6   	1.157324e+00	( 2 2 3 5 5 4  )
+G_LOOP:  1  9  6   	1.174539e+00	( 3 3 0 4 4 7  )
+G_LOOP:  1  10  6   	1.164111e+00	( 3 3 1 4 4 6  )
+G_LOOP:  1  11  6   	1.205201e+00	( 3 3 2 4 4 5  )
+G_LOOP:  2  0  6   	1.193311e+00	( 0 1 2 7 6 5  )
+G_LOOP:  2  1  6   	1.188857e+00	( 0 1 5 7 6 2  )
+G_LOOP:  2  2  6   	1.195015e+00	( 0 6 2 7 1 5  )
+G_LOOP:  2  3  6   	1.181085e+00	( 0 6 5 7 1 2  )
+G_LOOP:  2  4  6   	1.228592e+00	( 0 1 3 7 6 4  )
+G_LOOP:  2  5  6   	1.219603e+00	( 0 1 4 7 6 3  )
+G_LOOP:  2  6  6   	1.225118e+00	( 0 6 3 7 1 4  )
+G_LOOP:  2  7  6   	1.207634e+00	( 0 6 4 7 1 3  )
+G_LOOP:  2  8  6   	1.169005e+00	( 0 2 3 7 5 4  )
+G_LOOP:  2  9  6   	1.208104e+00	( 0 2 4 7 5 3  )
+G_LOOP:  2  10  6   	1.162870e+00	( 0 5 3 7 2 4  )
+G_LOOP:  2  11  6   	1.190349e+00	( 0 5 4 7 2 3  )
+G_LOOP:  2  12  6   	1.172513e+00	( 1 2 3 6 5 4  )
+G_LOOP:  2  13  6   	1.199555e+00	( 1 2 4 6 5 3  )
+G_LOOP:  2  14  6   	1.195792e+00	( 1 5 3 6 2 4  )
+G_LOOP:  2  15  6   	1.180986e+00	( 1 5 4 6 2 3  )
+GACTION: 5.228006e+00
+PBP: mass 1.800000e-03     -4.826981e-03  9.619272e-03  -2.477039e-02  -2.477035e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-03,  1.479425e+00 ( 1 of 1 )
+PBP: mass 1.800000e-02     1.999439e-02  2.785490e-02  -2.383971e-02  -2.383962e-02 ( 1 of 1 )
+FACTION: mass = 1.800000e-02,  1.524529e+00 ( 1 of 1 )
+RUNNING COMPLETED
+average cg iters for step= 0.000000e+00
+Time = 1.126632e+03 seconds
+total_iters = 32549
+
+
+get_i(0): EOF on input.
+exit: Mon Mar 29 18:27:53 2010
+

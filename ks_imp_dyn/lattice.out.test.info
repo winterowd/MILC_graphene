@@ -1,0 +1,20 @@
+magic_number = 20103
+time_stamp = "Thu Jan  5 17:03:09 2012"
+checksums = "6cadfdfc 6ebf1f38"
+nx = 8
+ny = 8
+nz = 8
+nt = 8
+action.description = "Gauge plus fermion"
+gauge.description = "Single plaquette action"
+gauge.nloops = 1
+gauge.nreps = 1
+gauge.beta11 = 0.160000
+gauge.tadpole.u0 = 1.000000
+gauge.ssplaq = 3.000000
+gauge.stplaq = 3.000000
+gauge.nersc_linktr = 1.000000e+00
+gauge.nersc_checksum = 15233342760812544
+quark.description = "O(a^2): couplings(pi)=0, Naik term, No O(a^2) errors, tadpole weights"
+quark.flavors = 4
+quark.mass = 1.000000
