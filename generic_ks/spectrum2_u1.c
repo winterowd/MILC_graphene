@@ -76,8 +76,9 @@ int spectrum2_u1( Real vmass, field_offset temp1, field_offset temp2,
     
         /* initialize temp1 and temp2 */
     clear_latvec_u1( temp1, EVENANDODD);
-    clear_latvec_u1( temp2, EVENANDODD);
-    //clear_latvec_u1( F_OFFSET(ttt), EVENANDODD); //debugging
+    clear_latvec_u1( temp2, EVENANDODD); 
+    clear_latvec_u1( F_OFFSET(ttt), EVENANDODD); //debugging
+    clear_latvec_u1( F_OFFSET(propmat), EVENANDODD);
 
     if(t_source < nt){  /* wall source */
       for(x=0;x<nx;x+=2)for(y=0;y<ny;y+=2)for(z=0;z<nz;z+=2) {
