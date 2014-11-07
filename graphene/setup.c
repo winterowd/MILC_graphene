@@ -500,7 +500,7 @@ readin(int prompt)
 #ifdef NON_COMPACT
       free(temp_pot);
 #endif
-      printf("Calling Reunitarize_u1() to check links that were read in!\n");
+      node0_printf("Calling Reunitarize_u1() to check links that were read in!\n");
       reunitarize_u1();
     }//else
     
