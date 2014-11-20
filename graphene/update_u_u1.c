@@ -92,6 +92,8 @@ gf_av=gf_max=0.0;
 #ifdef NON_COMPACT
 	  //For non-compact just add mom to gauge potential 
 	  s->potential[dir] += eps*(s->mom[dir].imag);
+	  s->link[dir].real = cos(s->potential[dir]);
+	  s->link[dir].imag = sin(s->potential[dir]);
 #endif	  
 	  /*#ifndef FOUR_DIM
 	  if( dir != TUP ) {
