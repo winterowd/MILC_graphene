@@ -32,7 +32,7 @@
 int spectrum2_u1( Real vmass, field_offset temp1, field_offset temp2,
 	       ferm_links_u1_t *fn){ 
   /* return the C.G. iteration number */
-  double *pi_ps_prop,*pi_sc_prop,*rho_pv_prop,*rho_vt_prop;
+  double *pi_ps_prop,*pi_ps_prop_temp,*pi_sc_prop,*rho_pv_prop,*rho_vt_prop;
   complex *fermion_prop_x, *scal_prop_x, *scal_prop_t;
   complex *fermion_prop_ta, *fermion_prop_tb, *fermion_prop_tc, *fermion_prop_td;
   Real vmass_x2, pi;
@@ -57,11 +57,12 @@ int spectrum2_u1( Real vmass, field_offset temp1, field_offset temp2,
   fermion_prop_tc = (complex *)malloc(nt*sizeof(complex));
   fermion_prop_td = (complex *)malloc(nt*sizeof(complex));
   pi_ps_prop = (double *)malloc(nt*sizeof(double) );   /* "pi" */
+  pi_ps_prop_temp = (double *)malloc(nt*sizeof(double) );
   pi_sc_prop = (double *)malloc(nt*sizeof(double) );   /* "pi2" */
   rho_vt_prop = (double *)malloc(nt*sizeof(double) );  /* "rho" */
   rho_pv_prop = (double *)malloc(nt*sizeof(double) );  /* "rho2" */
   for( t=0; t<nt; t++){
-    pi_ps_prop[t] = pi_sc_prop[t] = rho_pv_prop[t] = rho_vt_prop[t] = scal_prop_t[t].real = scal_prop_t[t].imag = 0.0;
+    pi_ps_prop[t] = pi_ps_prop_temp[t] = pi_sc_prop[t] = rho_pv_prop[t] = rho_vt_prop[t] = scal_prop_t[t].real = scal_prop_t[t].imag = 0.0;
     fermion_prop_ta[t].real = fermion_prop_ta[t].imag = fermion_prop_tb[t].real = fermion_prop_tb[t].imag = 0.;
     fermion_prop_tc[t].real = fermion_prop_tc[t].imag = fermion_prop_td[t].real = fermion_prop_td[t].imag = 0.;
   }
@@ -229,6 +230,7 @@ int spectrum2_u1( Real vmass, field_offset temp1, field_offset temp2,
 	fermion_prop_x[x].imag += cos(pi*t/nt)*lattice[i].propmat.imag + sin(pi*t/nt)*lattice[i].propmat.real;
 	
 	pi_ps_prop[t] += cc.real;
+	pi_ps_prop_temp[t] += cc.real;
 	
 	if( (x+y)%2==0)rho_pv_prop[t] += cc.real;
 	else	   rho_pv_prop[t] -= cc.real;
@@ -250,7 +252,10 @@ int spectrum2_u1( Real vmass, field_offset temp1, field_offset temp2,
       } /* x,y,z */
       
     } /* nt-loop */
-	  
+    for(t=0; t<nt; t++) {
+      printf("DEBUG: %d %d %e\n", isrc, t, pi_ps_prop_temp[t]);
+      pi_ps_prop_temp[t]=0; 
+    }
     
   } /* end loop on t_source */
   
@@ -300,6 +305,7 @@ int spectrum2_u1( Real vmass, field_offset temp1, field_offset temp2,
   free(fermion_prop_x); free(fermion_prop_ta); free(fermion_prop_tb);
   free(fermion_prop_tc); free(fermion_prop_td); free( pi_ps_prop ); 
   free( pi_sc_prop ); free( rho_pv_prop ); free( rho_vt_prop );
+  free( pi_ps_prop_temp );
   return(cgn);
 } /* spectrum */
 
