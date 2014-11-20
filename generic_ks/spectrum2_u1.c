@@ -77,7 +77,7 @@ int spectrum2_u1( Real vmass, field_offset temp1, field_offset temp2,
     
         /* initialize temp1 and temp2 */
     clear_latvec_u1( temp1, EVENANDODD);
-    clear_latvec_u1( temp2, EVENANDODD);
+    clear_latvec_u1( temp2, EVENANDODD); 
     clear_latvec_u1( F_OFFSET(ttt), EVENANDODD); //debugging
     clear_latvec_u1( F_OFFSET(propmat), EVENANDODD);
 
