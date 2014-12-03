@@ -53,6 +53,7 @@ gf_av=gf_max=0.0;
 	for(dir=TUP;dir<=TUP;dir++) {
 	#endif*/
 	  //uncompress_anti_hermitian( &(s->mom[dir]) , &htemp );
+#ifndef NON_COMPACT
 	  htemp.real = 0.0;
 	  htemp.imag = s->mom[dir].imag;
 	  link = &(s->link[dir]);
@@ -89,11 +90,13 @@ gf_av=gf_max=0.0;
 	  CADD(temp_mul, *link, temp2); 
 	  link->real = temp2.real;
 	  link->imag = temp2.imag;
-#ifdef NON_COMPACT
-	  //For non-compact just add mom to gauge potential 
+#else 
+	  //For non-compact just add mom to gauge potential
+	  rephase(OFF);
 	  s->potential[dir] += eps*(s->mom[dir].imag);
 	  s->link[dir].real = cos(s->potential[dir]);
 	  s->link[dir].imag = sin(s->potential[dir]);
+	  rephase(ON);
 #endif	  
 	  /*#ifndef FOUR_DIM
 	  if( dir != TUP ) {
