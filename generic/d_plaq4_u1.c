@@ -20,13 +20,19 @@ register site *s;
 register complex *m1,*m4;
  complex mtmp, temp_mul;
  double ss_sum,st_sum, *st_site, temp;
-double ss1[50] = {0.}; double ss2[50] = {0.};
+ double *ss_debug, *st_debug;
+double ss1[50] = {0.}; double ss2[50] = {0.}; 
  double st1[50] = {0.}; double st2[50] = {0.}; double st3[50] = {0.};
 msg_tag *mtag0,*mtag1;
     ss_sum = st_sum = 0.0;
 
     temp_complex = (complex *)malloc(sizeof(complex)*sites_on_node);
     st_site = (double *)malloc(sizeof(double)*sites_on_node);
+    ss_debug = (double *)malloc(nt*sizeof(double));
+    st_debug = (double *)malloc(nt*sizeof(double));
+    for(i=0; i<nt; i++) 
+      ss_debug[i] = st_debug[i] = 0.;
+
     if(temp_complex == NULL)
       {
 	printf("plaquette: can't malloc temp_complex\n");
@@ -88,6 +94,7 @@ msg_tag *mtag0,*mtag1;
 
 		if(dir1==TUP ) {
 		  CMULJ_( *(complex *)(gen_pt[1][i]), mtmp, temp_mul );
+		  st_debug[s->t] += (double)temp_mul.real;
 		  st_sum += (double)temp_mul.real;
 		  if(dir2==XUP) {
 		    st1[s->z] += (double)temp_mul.real;
@@ -110,6 +117,7 @@ msg_tag *mtag0,*mtag1;
 		}
 		else {          
 		  CMULJ_( *(complex *)(gen_pt[1][i]), mtmp, temp_mul );
+		  ss_debug[s->t] += (double)temp_mul.real;
 		  ss_sum += (double)temp_mul.real;
 		  if(dir1 == ZUP || dir2 == ZUP)
 		    ss1[s->z] += (double)temp_mul.real;
@@ -170,7 +178,16 @@ msg_tag *mtag0,*mtag1;
       st3[i] *= 1./(nx*ny*nt);
       node0_printf("PLAQS: %e %e %e %e %e\n", ss1[i], ss2[i], st1[i], st2[i],
 		   st3[i]);
-    }    
+    } 
+    for(i=0; i<nt; i++) {
+      g_doublesum(&ss_debug[i]);
+      g_doublesum(&st_debug[i]);
+      node0_printf("DEBUG_PLAQS: %d %e %e\n", i, 
+		   (1./((double)(3*nx*ny*nz)))*ss_debug[i], 
+		   (1./((double)(3*nx*ny*nz)))*st_debug[i]); 
+    }
+    free(ss_debug); free(st_debug);
     free(temp_complex);
+    free(st_site);
 } /* d_plaquette4 */
 
