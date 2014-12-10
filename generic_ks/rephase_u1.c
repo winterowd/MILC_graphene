@@ -16,7 +16,7 @@ register int i;
     node0_printf("with periodic boundary conditions in time\n");
 #endif
 
-    FORALLMYSITES(i,sit){
+    FORALLSITES(i,sit){
 	sit->phase[TUP] = 1.0;
 	if( (sit->t)%2 == 1) sit->phase[XUP] = -1.0;
 	  else sit->phase[XUP] = 1.0;
@@ -51,8 +51,9 @@ register site *s;
         node0_printf("DUMMY: you fouled up the phases\n");
         terminate(1);
     }
-    FORALLMYSITES(i,s){
-      FORALLMYUPDIR(dir) { //for(dir=XUP;dir<=TUP;dir++){
+    FORALLSITES(i,s){
+      //FORALLMYUPDIR(dir)
+      for(dir=XUP;dir<=TUP;dir++){
 	s->link[dir].real *= s->phase[dir];
 	s->link[dir].imag *= s->phase[dir];
       }
