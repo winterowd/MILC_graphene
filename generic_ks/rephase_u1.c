@@ -22,12 +22,12 @@ register int i;
 	  else sit->phase[XUP] = 1.0;
 	if( (sit->x)%2 == 1) sit->phase[YUP] = -sit->phase[XUP];
 	  else sit->phase[YUP] = sit->phase[XUP];
-#ifdef FOUR_DIM
+	//#ifdef FOUR_DIM
 	if( (sit->y)%2 == 1) sit->phase[ZUP] = -sit->phase[YUP];
 	  else sit->phase[ZUP] = sit->phase[YUP];
-#else
-	sit->phase[ZUP] = 1.0;
-#endif
+	//#else
+	//sit->phase[ZUP] = 1.0;
+	//#endif
 
 
 #ifndef PERIODICBC
