@@ -31,8 +31,8 @@ register int i;
 
 
 #ifndef PERIODICBC
-	//if( sit->t == nt-1) {
-	if( sit->t == 10 ) {
+	if( sit->t == nt-1) {
+	//if( sit->t == 10 ) {
 	    /* antiperiodic boundary conditions in Euclidean time */
 	    sit->phase[TUP] = -sit->phase[TUP];
 	}
