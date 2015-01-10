@@ -525,39 +525,43 @@ int ask_ildg_LFN(FILE *fp, int prompt, int flag, char *stringLFN){
 
 void coldlat_u1(void){
     /* sets link matrices to unit matrices */
-    register int i,dir;
-    register site *sit;
+  register int i,dir;
+  register site *sit;
 #ifdef EXT_FIELD
-    FORALLSITES(i,sit){
-      for(dir=XUP;dir<=TUP;dir++){
-	if(dir==ZUP || dir==TUP) {
-	  sit->link[dir].real = 1.0;
-	  sit->link[dir].imag = 0.0;
-	  sit->potential[dir] = 0.0;
-	}//if
-	else {
-	  if(dir==YUP) 
-	    sit->potential[dir] = (double)B_ext*sit->x;
-	  if(dir==XUP && sit->x==(nx-1))
+  FORALLSITES(i,sit){
+    for(dir=XUP;dir<=TUP;dir++){
+      if(dir==ZUP || dir==TUP) {
+	sit->link[dir].real = 1.0;
+	sit->link[dir].imag = 0.0;
+	sit->potential[dir] = 0.0;
+      }//if
+      else {
+	if(dir==YUP) 
+	  sit->potential[dir] = (double)B_ext*sit->x;
+	if(dir==XUP) {
+	  if(sit->x==(nx-1))
 	    sit->potential[dir] = (double)-B_ext*nx*sit->y;
-	}//else 
-	sit->link[dir].real = cos(sit->potential[dir]);
-	sit->link[dir].imag = sin(sit->potential[dir]);
-      }//dir
-    }//FORALLSITES
+	  else
+	    sit->potential[dir] = 0.0;
+	  }
+      }//else 
+      sit->link[dir].real = cos(sit->potential[dir]);
+      sit->link[dir].imag = sin(sit->potential[dir]);
+    }//dir
+  }//FORALLSITES
     //exp_links();
 #else
-    FORALLSITES(i,sit){
-	for(dir=XUP;dir<=TUP;dir++){
-	  sit->link[dir].real = 1.0;
-	  sit->link[dir].imag = 0.0;
+  FORALLSITES(i,sit){
+    for(dir=XUP;dir<=TUP;dir++){
+      sit->link[dir].real = 1.0;
+      sit->link[dir].imag = 0.0;
 #ifdef NON_COMPACT
-	  sit->potential[dir] = 0.0;
+      sit->potential[dir] = 0.0;
 #endif
-	}
     }
+  }
 #endif
-	node0_printf("unit gauge configuration loaded\n");
+  node0_printf("unit gauge configuration loaded\n");
 } //coldlat_u1 *Added 6/10/2010
 
 void funnylat_u1(void)  {
