@@ -242,6 +242,12 @@ main( int argc, char **argv )
 #ifdef ONEMASS
 	  avspect_iters += spectrum2_u1(mass,F_OFFSET(phi),F_OFFSET(xxx),
 					&fn_links);
+	  int flag;
+	  if(source_start >= 1) //want point source
+	    flag=1;
+	  else
+	    flag=0;
+	  avspect_iters += spectrum_s(mass, flag, &fn_links);
 #else
 	  avspect_iters += spectrum2( mass1, F_OFFSET(phi1),
 				      F_OFFSET(xxx1), &fn_links);

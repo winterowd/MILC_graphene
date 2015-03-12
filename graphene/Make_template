@@ -276,7 +276,7 @@ graphene_spectrum::
 	"DEFINES= -DFN -DONEMASS -DPHI_ALGORITHM -DHMC_ALGORITHM -DWANT_U1 -DNPBP_REPS -DNON_COMPACT -DDRUT_DEBUG -DSPECTRUM" \
 	"GAUGE = plaquette_action.h" \
 	"QUARK = asqtad_action.h" \
-	"EXTRA_OBJECTS = ${ASQFORCE} ${SYMZK1FORCE} quark_stuff.o update_onemass_u1.o d_action_u1.o spectrum2_u1.o"
+	"EXTRA_OBJECTS = ${ASQFORCE} ${SYMZK1FORCE} quark_stuff.o update_onemass_u1.o d_action_u1.o spectrum2_u1.o spectrum2_s.o"
 
 clean:
 	-/bin/rm -f *.o quark_action.h gauge_action.h
