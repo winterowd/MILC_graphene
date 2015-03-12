@@ -681,6 +681,9 @@ int spectrum(ferm_links_t *fn);
 int spectrum2_u1( Real vmass, field_offset temp1, field_offset temp2,
 	       ferm_links_u1_t *fn);
 
+/* spectrum_s.c */
+int spectrum_s( Real vmass, int src_flag, ferm_links_u1_t *fn);
+
 /* spectrum_fzw.c */
 int spectrum_fzw( Real vmass, field_offset temp1, field_offset temp2,
 		  ferm_links_t *fn );

@@ -4,89 +4,99 @@
 
 /* Spectrum for Kogut-Susskind pointlike hadrons, wall source */
 /* Wall source is modulated by a cosine at the lowest Matsubara frequency */
-#include "ks_dyn_includes.h"
+/* 03/15 CW Modified for graphene code */
 
-int spectrum() /* return the C.G. iteration number */
+#include "generic_ks_includes_u1.h"
+
+int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G. iteration number */
 {
   Real piprop,pi2prop,rhoprop0,rhoprop1,rho2prop0,rho2prop1,barprop;
-  Real mass_x2;
+  Real vmass_x2;
   register complex cc;
   Real finalrsq, th;
   register int i,x,y,z,t,icol,cgn;
+  int source_type;
+  char *source_string[2] = {"WALL", "POINT"};
 
   /* Fix ZUP Coulomb gauge - gauge links only*/
-  rephase( OFF );
-  gaugefix(ZUP,(Real)1.8,500,(Real)GAUGE_FIX_TOL);
-  rephase( ON );
+  //rephase( OFF );
+  //gaugefix(ZUP,(Real)1.8,500,(Real)GAUGE_FIX_TOL);
+  //rephase( ON );
   
-  mass_x2 = 2.*mass;
+  vmass_x2 = 2.*vmass;
   cgn=0;
   /* Phase increment for minimum Matsubara frequency */
   th = PI/nt;
 
-  for(icol=0; icol<3; icol++)
-    {
-      
-      /* initialize ttt and xxx */
-      clear_latvec( F_OFFSET(ttt), EVENANDODD);
-      clear_latvec( F_OFFSET(xxx), EVENANDODD);
-      for(x=0;x<nx;x+=2)for(y=0;y<ny;y+=2)for(t=0;t<nt;t+=2)
-/**for(x=0;x<1;x+=2)for(y=0;y<1;y+=2)for(t=0;t<1;t+=2)**/
-	{
-	  if( node_number(x,y,0,t) != mynode() )continue;
-	  i=node_index(x,y,0,t);
-	  /* Modulate source with Matsubara phase */
-	  lattice[i].ttt.c[icol].real = -cos((double)t*th);
+  
+  /* initialize ttt and xxx */
+  clear_latvec_u1( F_OFFSET(ttt), EVENANDODD);
+  clear_latvec_u1( F_OFFSET(xxx), EVENANDODD);
+  if(src_flag == 1) { //construct point source at origin
+    if( node_number(0,0,0,0) == mynode() )
+      { 
+	  i=node_index(0,0,0,0);
+	  lattice[i].ttt.real = (-nx*ny*nz/8.);
 	}
-
-      /* Multiply by -Madjoint */
-      load_ferm_links(&fn_links);
-      dslash_site( F_OFFSET(ttt), F_OFFSET(phi), ODD, &fn_links);
-      scalar_mult_latvec( F_OFFSET(ttt), -mass_x2, F_OFFSET(phi), EVEN);
-      /* do a C.G. */
-      load_ferm_links(&fn_links);
-      cgn += ks_congrad(F_OFFSET(phi),F_OFFSET(xxx),mass,
-			niter, rsqprop, PRECISION, EVENANDODD, &finalrsq,
-			&fn_links);
+    source_type=1;
+  }
+  else { //wall source  
+    for(y=0;y<ny;y+=2)for(t=0;t<nt;t+=2)
+      /**for(x=0;x<1;x+=2)for(y=0;y<1;y+=2)for(t=0;t<1;t+=2)**/
+      {
+	if( node_number(0,y,0,t) != mynode() )continue;
+	i=node_index(0,y,0,t);
+	/* Modulate source with Matsubara phase */
+	lattice[i].ttt.real = -cos((double)t*th);
+      }
+    source_type=0;
+  }
+  /* Multiply by -Madjoint */
+  //load_ferm_links(&fn_links); //this needs to be modified (how?)
+  dslash_fn_site_u1( F_OFFSET(ttt), F_OFFSET(phi), ODD, fn);
+  scalar_mult_latvec_u1( F_OFFSET(ttt), -vmass_x2, F_OFFSET(phi), EVEN);
+  /* do a C.G. */
+  //load_ferm_links(&fn_links); //this needs to be modified (how?)
+  cgn += ks_congrad_u1(F_OFFSET(phi),F_OFFSET(xxx),vmass,
+		       niter, nrestart, rsqprop, PRECISION, EVENANDODD, &finalrsq,
+		       fn);
       
-      /* fill the hadron matrix */
-      copy_latvec( F_OFFSET(xxx), F_OFFSET(propmat[icol]), EVENANDODD);
-    } /* end loop on icol */
+  /* fill the hadron matrix */
+  copy_latvec_u1( F_OFFSET(xxx), F_OFFSET(propmat[icol]), EVENANDODD);
+    
   
   /* measure the meson propagator */
-  for(z=0; z<nz; z++)
+  for(x=0; x<nx; x++)
     {
       /* clear meson propgators */
       piprop=rhoprop0=rhoprop1=pi2prop=rho2prop0=rho2prop1=0.;
       
-      for(x=0;x<nx;x++)for(y=0;y<ny;y++)for(t=0;t<nt;t++)
-	for(icol=0;icol<3;icol++)
-	  {
-	    if( node_number(x,y,z,t) != mynode() )continue;
-	    i=node_index(x,y,z,t);
-	    cc = su3_dot( &lattice[i].propmat[icol],
-			 &lattice[i].propmat[icol] );
-	    
-	    piprop += cc.real;
-	    
-	    if( (x+y)%2==0)rhoprop0 += cc.real;
-	    else	   rhoprop0 -= cc.real;
-	    if( (y+t)%2==0)rhoprop1 += cc.real;
-	    else	   rhoprop1 -= cc.real;
-	    if( (t+x)%2==0)rhoprop1 += cc.real;
-	    else	   rhoprop1 -= cc.real;
-	    
-	    if( x%2==0)rho2prop1 += cc.real;
-	    else       rho2prop1 -= cc.real;
-	    if( y%2==0)rho2prop1 += cc.real;
-	    else       rho2prop1 -= cc.real;
-	    if( t%2==0)rho2prop0 += cc.real;
-	    else       rho2prop0 -= cc.real;
-	    
-	    if( (x+y+t)%2==0)pi2prop += cc.real;
-	    else	     pi2prop -= cc.real;
-	    
-	  }
+      for(y=0;y<ny;y++)for(t=0;t<nt;t++)
+	{
+	  if( node_number(x,y,0,t) != mynode() )continue;
+	  i=node_index(x,y,0,t);
+	  CMULJ_( lattice[i].propmat[icol], lattice[i].propmat[icol], cc);
+	  
+	  piprop += cc.real;
+	  
+	  if( (x+y)%2==0)rhoprop0 += cc.real;
+	  else	   rhoprop0 -= cc.real;
+	  if( (y+t)%2==0)rhoprop1 += cc.real;
+	  else	   rhoprop1 -= cc.real;
+	  if( (t+x)%2==0)rhoprop1 += cc.real;
+	  else	   rhoprop1 -= cc.real;
+	  
+	  if( x%2==0)rho2prop1 += cc.real;
+	  else       rho2prop1 -= cc.real;
+	  if( y%2==0)rho2prop1 += cc.real;
+	  else       rho2prop1 -= cc.real;
+	  if( t%2==0)rho2prop0 += cc.real;
+	  else       rho2prop0 -= cc.real;
+	  
+	  if( (x+y+t)%2==0)pi2prop += cc.real;
+	  else	     pi2prop -= cc.real;
+	  
+	}
       
       g_sync();
       
@@ -97,34 +107,12 @@ int spectrum() /* return the C.G. iteration number */
       g_floatsum( &rho2prop0 );
       g_floatsum( &rho2prop1 );
       g_floatsum( &pi2prop );
-      if(mynode()==0)printf("MES_SCREEN  %d  %e  %e  %e  %e  %e  %e\n",z,
+      if(mynode()==0)printf("MES_SCREEN  %d  %e  %e  %e  %e  %e  %e\n",x,
 			    (double)piprop,(double)rhoprop0,
 			    (double)rhoprop1,
 			    (double)pi2prop,(double)rho2prop0,
                             (double)rho2prop1);
-    } /* nz-loop */
-  
-  /* measure the baryon propagator */
-  for(z=0; z<nz; z++)
-    {
-      /* clear baryon propgators */
-      barprop=0.0;
-      
-      for(x=0;x<nx;x+=2)for(y=0;y<ny;y+=2)for(t=0;t<nt;t+=2)
-	{
-	  if( node_number(x,y,z,t) != mynode() )continue;
-	  i=node_index(x,y,z,t);
-	  cc = det_su3((su3_matrix *)lattice[i].propmat );
-	  /* Include phase for Fourier component at minimum Matsubara freq.*/
-	  barprop += cc.real*cos((double)t*th);
-	}
-      
-      g_sync();
-      
-      /* dump baryon propagators */
-      g_floatsum( &barprop );
-      if(mynode()==0)printf("NUC_SCREEN  %d  %e\n",z,(double)barprop);
-    } /* nz-loop */
+    } /* nx-loop */
   
   return(cgn);
 } /* spectrum */

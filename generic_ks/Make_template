@@ -131,6 +131,7 @@ G_KS_ALL = \
   spectrum.o \
   spectrum2.o \
   spectrum2_u1.o \
+  spectrum_s.o \
   spectrum_fzw.o \
   spectrum_hybrids5.o \
   spectrum_mom.o \
@@ -432,6 +433,8 @@ spectrum_hybrids5.o: ../generic_ks/spectrum_hybrids5.c
 spectrum2.o: ../generic_ks/spectrum2.c
 	${CC} -c ${CFLAGS} $<
 spectrum2_u1.o: ../generic_ks/spectrum2_u1.c
+	${CC} -c ${CFLAGS} $<
+spectrum_s.o: ../generic_ks/spectrum_s.c
 	${CC} -c ${CFLAGS} $<
 spectrum_fzw.o: ../generic_ks/spectrum_fzw.c
 	${CC} -c ${CFLAGS} $<
