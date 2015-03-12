@@ -62,7 +62,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
 		       fn);
       
   /* fill the hadron matrix */
-  copy_latvec_u1( F_OFFSET(xxx), F_OFFSET(propmat[icol]), EVENANDODD);
+  copy_latvec_u1( F_OFFSET(xxx), F_OFFSET(propmat), EVENANDODD);
     
   
   /* measure the meson propagator */
@@ -75,7 +75,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
 	{
 	  if( node_number(x,y,0,t) != mynode() )continue;
 	  i=node_index(x,y,0,t);
-	  CMULJ_( lattice[i].propmat[icol], lattice[i].propmat[icol], cc);
+	  CMULJ_( lattice[i].propmat, lattice[i].propmat, cc);
 	  
 	  piprop += cc.real;
 	  
