@@ -13,6 +13,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
   Real piprop,pi2prop,rhoprop0,rhoprop1,rho2prop0,rho2prop1,barprop;
   Real vmass_x2;
   register complex cc;
+  complex temp_mul;
   Real finalrsq, th;
   register int i,x,y,z,t,icol,cgn;
   int source_type;
@@ -75,8 +76,12 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
 	{
 	  if( node_number(x,y,0,t) != mynode() )continue;
 	  i=node_index(x,y,0,t);
-	  CMULJ_( lattice[i].propmat, lattice[i].propmat, cc);
 	  
+	  CMULJ_( lattice[i].propmat, lattice[i].propmat, cc);
+
+	  if(source_type==1) //project to lowest Matsubara mode for point source
+	    cc.real = cc.real*cos((double)t*th);
+
 	  piprop += cc.real;
 	  
 	  if( (x+y)%2==0)rhoprop0 += cc.real;
