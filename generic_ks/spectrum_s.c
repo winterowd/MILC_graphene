@@ -10,12 +10,11 @@
 
 int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G. iteration number */
 {
-  Real piprop,pi2prop,rhoprop0,rhoprop1,rho2prop0,rho2prop1,barprop;
+  Real piprop,pi2prop,rhoprop0,rhoprop1,rho2prop0,rho2prop1;
   Real vmass_x2;
   register complex cc;
-  complex temp_mul;
   Real finalrsq, th;
-  register int i,x,y,z,t,icol,cgn;
+  register int i,x,y,t,cgn;
   int source_type;
   char *source_string[2] = {"WALL", "POINT"};
 
@@ -65,7 +64,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
   /* fill the hadron matrix */
   copy_latvec_u1( F_OFFSET(xxx), F_OFFSET(propmat), EVENANDODD);
     
-  
+  if(this_node==0)printf("SPAT_MES_SOURCE: %s\n",source_string[source_type]);
   /* measure the meson propagator */
   for(x=0; x<nx; x++)
     {
