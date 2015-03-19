@@ -11,6 +11,7 @@
 int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G. iteration number */
 {
   Real piprop,pi2prop,rhoprop0,rhoprop1,rho2prop0,rho2prop1;
+  complex ferm_prop;
   Real vmass_x2;
   register complex cc;
   Real finalrsq, th;
@@ -22,6 +23,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
   //rephase( OFF );
   //gaugefix(ZUP,(Real)1.8,500,(Real)GAUGE_FIX_TOL);
   //rephase( ON );
+  piprop=pi2prop=rhoprop0=rhoprop1=rho2prop0=rho2prop1=ferm_prop.real=ferm_prop.imag=0.;
   
   vmass_x2 = 2.*vmass;
   cgn=0;
@@ -48,6 +50,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
 	i=node_index(0,y,0,t);
 	/* Modulate source with Matsubara phase */
 	lattice[i].ttt.real = -cos((double)t*th);
+	lattice[i].ttt.imag = sin((double)t*th)
       }
     source_type=0;
   }
@@ -78,8 +81,17 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
 	  
 	  CMULJ_( lattice[i].propmat, lattice[i].propmat, cc);
 
-	  if(source_type==1) //project to lowest Matsubara mode for point source
-	    cc.real = cc.real*cos((double)t*th);
+	  //if(source_type==1) //project to lowest Matsubara mode for point source
+	    //cc.real = cc.real*cos((double)t*th);
+
+	  if(source_type==1) { //project to lowest Matsubara mode for point source
+	    ferm_prop.real += cos((double)th*t)*lattice[i].propmat.real - sin((double)th*t)*lattice[i].propmat.imag;
+	    ferm_prop.imag += cos((double)th*t)*lattice[i].propmat.imag + sin((double)th*t)*lattice[i].propmat.real;
+	  }
+	  else { //phase already in wall source
+	    ferm_prop.real += lattice[i].propmat.real;
+	    ferm_prop.imag += lattice[i].propmat.imag;
+	  }
 
 	  piprop += cc.real;
 	  
@@ -116,6 +128,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
 			    (double)rhoprop1,
 			    (double)pi2prop,(double)rho2prop0,
                             (double)rho2prop1);
+      if(this_node==0)printf("FERMION_PROP_X %d %e %e\n",x, (double)ferm_prop.real, (double)ferm_prop.imag);
     } /* nx-loop */
   
   return(cgn);
