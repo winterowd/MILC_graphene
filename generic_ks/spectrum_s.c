@@ -50,7 +50,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
 	i=node_index(0,y,0,t);
 	/* Modulate source with Matsubara phase */
 	lattice[i].ttt.real = -cos((double)t*th);
-	lattice[i].ttt.imag = sin((double)t*th)
+	lattice[i].ttt.imag = sin((double)t*th);
       }
     source_type=0;
   }
