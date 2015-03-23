@@ -23,8 +23,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
   //rephase( OFF );
   //gaugefix(ZUP,(Real)1.8,500,(Real)GAUGE_FIX_TOL);
   //rephase( ON );
-  piprop=pi2prop=rhoprop0=rhoprop1=rho2prop0=rho2prop1=ferm_prop.real=ferm_prop.imag=0.;
-  
+    
   vmass_x2 = 2.*vmass;
   cgn=0;
   /* Phase increment for minimum Matsubara frequency */
@@ -72,7 +71,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
   for(x=0; x<nx; x++)
     {
       /* clear meson propgators */
-      piprop=rhoprop0=rhoprop1=pi2prop=rho2prop0=rho2prop1=0.;
+      piprop=rhoprop0=rhoprop1=pi2prop=rho2prop0=rho2prop1=ferm_prop.real=ferm_prop.imag=0.;
       
       for(y=0;y<ny;y++)for(t=0;t<nt;t++)
 	{
@@ -123,6 +122,7 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
       g_floatsum( &rho2prop0 );
       g_floatsum( &rho2prop1 );
       g_floatsum( &pi2prop );
+      g_complexsum( &ferm_prop );
       if(mynode()==0)printf("MES_SCREEN  %d  %e  %e  %e  %e  %e  %e\n",x,
 			    (double)piprop,(double)rhoprop0,
 			    (double)rhoprop1,
