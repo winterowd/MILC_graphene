@@ -84,8 +84,8 @@ int spectrum_s(Real vmass, int src_flag, ferm_links_u1_t *fn) /* return the C.G.
 	    //cc.real = cc.real*cos((double)t*th);
 
 	  if(source_type==1) { //project to lowest Matsubara mode for point source
-	    ferm_prop.real += cos((double)th*t)*lattice[i].propmat.real - sin((double)th*t)*lattice[i].propmat.imag;
-	    ferm_prop.imag += cos((double)th*t)*lattice[i].propmat.imag + sin((double)th*t)*lattice[i].propmat.real;
+	    ferm_prop.real += cos((double)th*t)*lattice[i].propmat.real + sin((double)th*t)*lattice[i].propmat.imag;
+	    ferm_prop.imag += cos((double)th*t)*lattice[i].propmat.imag - sin((double)th*t)*lattice[i].propmat.real;
 	  }
 	  else { //phase already in wall source
 	    ferm_prop.real += lattice[i].propmat.real;
