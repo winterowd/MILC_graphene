@@ -207,9 +207,9 @@ main( int argc, char **argv )
 #ifdef SPECTRUM 
 	//Fix gauge by requiring sum of scalar potential over entire 
 	//lattice to be zero
+	rephase( OFF );
 	double avg_potential=0.;
 	int t;
-	//debugging free propagator so comment out for now
 	for(t=0; t<nt; t++) {
 	  FORALLSITES(i, s) {
 	    if(s->t == t)
@@ -217,13 +217,16 @@ main( int argc, char **argv )
 	  }
 	  avg_potential = (double) (avg_potential/((double)nx*ny*nz));
 	  FORALLSITES(i, s) {
-	    if(s->t == t)
+	    if(s->t == t) {
 	      s->potential[TUP] = s->potential[TUP] - avg_potential;
+	      s->link[TUP].real = cos(s->potential[TUP]);
+	      s->link[TUP].imag = sin(s->potential[TUP]);
+	    }
 	  }
 	  avg_potential=0.;
 	}
 	/* Fix Landau gauge - gauge links only*/
-	rephase( OFF );
+	//rephase( OFF );
 	//NOT NECESSARY FOR TIME-LINKS ONLY MEASURING NEUTRAL MESONS
 	//gaugefix_u1(8,(Real)1.8,2500,(Real)GAUGE_FIX_TOL);
 	rephase( ON );
