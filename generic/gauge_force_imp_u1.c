@@ -217,9 +217,11 @@ int gf_i,gf_j;
 gf_av=gf_max=0.0;
 **END TEMP**/
 
-/**double dtime,dclock();
-dtime = -dclock();**/
-
+#ifdef GFTIME
+ double dtime;
+ dtime = -dclock();
+#endif
+ 
     eb = eps*beta;
     /* Loop over directions, update mom[dir1] */
     //#ifdef FOUR_DIM
@@ -323,7 +325,10 @@ g_floatmax( &gf_max );
 gf_av /= (4*volume);
 if(this_node==0)printf("GF: %e %e\n",gf_av,gf_max);
 **END TEMP **/
-/**dtime += dclock();
-if(this_node==0)printf("G_FORCE: time = %e mflops = %e\n",
-dtime, (double)(10848.0*volume/(1.0e6*dtime*numnodes())) );**/
+#ifdef GFTIME
+    dtime += dclock();
+    if(this_node==0)printf("G_FORCE: time = %e mflops = %e\n",
+			   dtime, (double)(10848.0*volume/(1.0e6*dtime*numnodes())) );
+#endif
+
 }// gauge_force()
