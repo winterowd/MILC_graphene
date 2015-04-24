@@ -32,12 +32,12 @@ cleanup_one_gather_set(msg_tag *tags[])
 {
   int i;
 
-  for(i=XUP;i<=TUP;i++){
+  FORALLMYUPDIR(i){
     cleanup_gather( tags[i] );
     cleanup_gather( tags[OPP_DIR(i)] );
   }
 
-  for(i=X3UP;i<=T3UP;i++){
+  FORALLMYUP_3DIR(i){
     cleanup_gather( tags[i] );
     cleanup_gather( tags[OPP_3_DIR(i)] );
   }
@@ -54,12 +54,12 @@ void cleanup_gathers(msg_tag *tags1[], msg_tag *tags2[])
    from negative directions.  Use "fatlinks" for one link transport,
    "longlinks" for three link transport. */
 
-void dslash_fn_site( field_offset src, field_offset dest, int parity,
-		     fn_links_t *fn ) 
+void dslash_fn_site_u1( field_offset src, field_offset dest, int parity,
+		     fn_links_u1_t *fn ) 
 {
   msg_tag *tag[16];
 
-  dslash_fn_site_special(src, dest, parity, tag, 1, fn);
+  dslash_fn_site_special_1(src, dest, parity, tag, 1, fn);
   cleanup_one_gather_set(tag);
 }
 
@@ -227,20 +227,20 @@ void dslash_fn_site_special( field_offset src, field_offset dest,
 
 }
 
-void dslash_fn_field( su3_vector *src, su3_vector *dest, int parity,
-		      fn_links_t *fn) {
+void dslash_fn_field_u1( complex *src, complex *dest, int parity,
+		      fn_links_u1_t *fn) {
     register int dir;
     msg_tag *tag[16];
 
-    dslash_fn_field_special(src, dest, parity, tag, 1, fn );
+    dslash_fn_field_special_u1(src, dest, parity, tag, 1, fn );
 
     /* free up the buffers */
-    for(dir=XUP; dir<=TUP; dir++){
+    FORALLMYUPDIR(i){
       cleanup_gather(tag[dir]);
       cleanup_gather(tag[OPP_DIR(dir)]);
     }
 
-    for(dir=X3UP; dir<=T3UP; dir++){
+    FORALLMYUP_3DIR(i){
 	cleanup_gather(tag[dir]);
 	cleanup_gather(tag[OPP_3_DIR(dir)]);
     }
@@ -251,18 +251,18 @@ void dslash_fn_field( su3_vector *src, su3_vector *dest, int parity,
   if this is the first use, otherwise reused. If start=1,use
   start_gather_field, otherwise use restart_gather_field. 
   The calling program must clean up the gathers and temps! */
-void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
+void dslash_fn_field_special_u1(complex *src, complex *dest,
 			     int parity, msg_tag **tag, int start,
-			     fn_links_t *fn ){
-  register int i;
+			     fn_links_u1_t *fn ){
+  register int i, j;
   register site *s;
   register int dir;
-  register su3_matrix *fat4, *long4, *fatback4, *longback4;
-  su3_vector tvec;
-  su3_matrix *t_fatlink;
-  su3_matrix *t_longlink;
-  su3_matrix *t_fatbacklink;
-  su3_matrix *t_longbacklink;
+  register complex *fat4, *long4, *fatback4, *longback4;
+  register complex add_temp[4];
+  complex *t_fatlink;
+  complex *t_longlink;
+  complex *t_fatbacklink;
+  complex *t_longbacklink;
 #ifdef D_FN_GATHER13
   int coords[4]; /* for avoiding gathers */
   static int d_fn_g13_checked = 0;
@@ -287,10 +287,10 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
   for( dir=XUP; dir<=TUP; dir++ ){
     if(start==1) 
       {
-	tag[DIR3(dir)] = start_gather_field(src, sizeof(su3_vector),
+	tag[DIR3(dir)] = start_gather_field(src, sizeof(complex),
 					    DIR3(dir),parity, 
 					    gen_pt[DIR3(dir)] );
-	tag[dir] = start_gather_field( src, sizeof(su3_vector), 
+	tag[dir] = start_gather_field( src, sizeof(complex), 
 				       dir, parity,gen_pt[dir] );
 	/* if the first neighbor came from another node, we should be able
 	   to find it in the third neighbor list, layout permitting --
@@ -313,7 +313,7 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
 	} END_LOOP
     }
     else {
-      restart_gather_field(src, sizeof(su3_vector), DIR3(dir), parity, 
+      restart_gather_field(src, sizeof(complex), DIR3(dir), parity, 
 			   gen_pt[DIR3(dir)], tag[DIR3(dir)]);
       //First nearest neighbor gather doesn't need restarting - pointer are OK
     }
@@ -326,9 +326,9 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
   for( dir=XUP; dir <= TUP; dir++){
       if (start==1){
 	tag[OPP_3_DIR(DIR3(dir))]=start_gather_field( src,
-	  sizeof(su3_vector), OPP_3_DIR(DIR3(dir)), parity, gen_pt[OPP_3_DIR(DIR3(dir))] );
+	  sizeof(complex), OPP_3_DIR(DIR3(dir)), parity, gen_pt[OPP_3_DIR(DIR3(dir))] );
         tag[OPP_DIR(dir)] = start_gather_field( src,
-	   sizeof(su3_vector), OPP_DIR( dir), parity, gen_pt[OPP_DIR(dir)] );
+	   sizeof(complex), OPP_DIR( dir), parity, gen_pt[OPP_DIR(dir)] );
 	FORSOMEPARITY(i,s,parity){
 	  if( gen_pt[OPP_DIR(dir)][i] < (char *)src 
 	    || gen_pt[OPP_DIR(dir)][i] >= (char *)(src+sites_on_node) ){
@@ -342,7 +342,7 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
 	} END_LOOP
       }
       else{
-	restart_gather_field( src, sizeof(su3_vector),
+	restart_gather_field( src, sizeof(complex),
          OPP_3_DIR(DIR3(dir)),parity, gen_pt[OPP_3_DIR(DIR3(dir))], 
 			      tag[OPP_3_DIR(DIR3(dir))] );
         //Don't restart first neighbor
@@ -363,17 +363,17 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
   for( dir=XUP; dir<=TUP; dir++ ){
     if(start==1)
       {
-	tag[dir] = start_gather_field( src, sizeof(su3_vector), 
+	tag[dir] = start_gather_field( src, sizeof(complex), 
 					   dir, parity,gen_pt[dir] );
-	tag[DIR3(dir)] = start_gather_field(src, sizeof(su3_vector),
+	tag[DIR3(dir)] = start_gather_field(src, sizeof(complex),
 						DIR3(dir),parity, 
 						gen_pt[DIR3(dir)] );
       }
     else
       {
-	restart_gather_field( src, sizeof(su3_vector), 
+	restart_gather_field( src, sizeof(complex), 
 				  dir, parity,gen_pt[dir], tag[dir]);
-	restart_gather_field(src, sizeof(su3_vector), DIR3(dir), parity, 
+	restart_gather_field(src, sizeof(complex), DIR3(dir), parity, 
 				 gen_pt[DIR3(dir)], tag[DIR3(dir)]);
       }
   }
@@ -381,16 +381,16 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
   /* Start gathers from negative directions */
   for( dir=XUP; dir <= TUP; dir++){
       if (start==1) tag[OPP_DIR(dir)] = start_gather_field( src,
-	   sizeof(su3_vector), OPP_DIR( dir), parity, gen_pt[OPP_DIR(dir)] );
-      else restart_gather_field( src, sizeof(su3_vector), 
+	   sizeof(complex), OPP_DIR( dir), parity, gen_pt[OPP_DIR(dir)] );
+      else restart_gather_field( src, sizeof(complex), 
 	   OPP_DIR( dir), parity, gen_pt[OPP_DIR(dir)], tag[OPP_DIR(dir)] );
    }
 
   /* Start 3-neighbour gathers from negative directions */
   for( dir=X3UP; dir <= T3UP; dir++){
       if (start==1) tag[OPP_3_DIR(dir)]=start_gather_field(
-        src, sizeof(su3_vector), OPP_3_DIR( dir), parity, gen_pt[OPP_3_DIR(dir)] );
-      else restart_gather_field( src, sizeof(su3_vector),
+        src, sizeof(complex), OPP_3_DIR( dir), parity, gen_pt[OPP_3_DIR(dir)] );
+      else restart_gather_field( src, sizeof(complex),
         OPP_3_DIR( dir),parity, gen_pt[OPP_3_DIR(dir)], tag[OPP_3_DIR(dir)] );
   }
 
@@ -406,7 +406,7 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
   FORSOMEPARITY(i,s,parity){
       fat4 = &(t_fatlink[4*i]);
       long4 = &(t_longlink[4*i]);
-      mult_su3_mat_vec_sum_4dir( fat4,
+      /*mult_su3_mat_vec_sum_4dir( fat4,
 	    (su3_vector *)gen_pt[XUP][i], (su3_vector *)gen_pt[YUP][i],
 	    (su3_vector *)gen_pt[ZUP][i], (su3_vector *)gen_pt[TUP][i],
 	    &(dest[i]) );
@@ -415,9 +415,39 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
 	    (su3_vector *)gen_pt[X3UP][i], (su3_vector *)gen_pt[Y3UP][i],
 	    (su3_vector *)gen_pt[Z3UP][i], (su3_vector *)gen_pt[T3UP][i],
 	    &tvec );
-      add_su3_vector(&(dest[i]), &tvec, &(dest[i]) );
+	    add_su3_vector(&(dest[i]), &tvec, &(dest[i]) );*/
+
+      CMUL_MULREAL(fat4[0], (*(complex *)(gen_pt[XUP][i])), v_Fermi, add_temp[0]);
+      CMUL_MULREAL(fat4[1], (*(complex *)(gen_pt[YUP][i])), v_Fermi, add_temp[1]);
+#ifdef FOUR_DIM
+      CMUL_MULREAL(fat4[2], (*(complex *)(gen_pt[ZUP][i])), v_Fermi, add_temp[2]);
+#endif 
+      CMUL_MULREAL(fat4[3], (*(complex *)(gen_pt[TUP][i])), v_Fermi, add_temp[3]);
+
+      dest[i].real = dest[i].imag = 0.0;
+      for(j=0; j<4; j++) {
+#ifndef FOUR_DIM
+	if(j != 2)
+#endif
+	  CADD(add_temp[j], dest[i], dest[i]);
+      }
+
+      CMUL_MULREAL(long4[0], (*(complex *)(gen_pt[X3UP][i])), v_Fermi, add_temp[0]);
+      CMUL_MULREAL(long4[1], (*(complex *)(gen_pt[Y3UP][i])), v_Fermi, add_temp[1]);
+#ifdef FOUR_DIM
+      CMUL_MULREAL(long4[2], (*(complex *)(gen_pt[Z3UP][i])), v_Fermi, add_temp[2]);
+#endif 
+      CMUL_MULREAL(long4[3], (*(complex *)(gen_pt[T3UP][i])), v_Fermi, add_temp[3]);
+      
+      for(j=0; j<4; j++) {
+#ifndef FOUR_DIM
+	if(j != 2)
+#endif
+	  CADD(add_temp[j], dest[i], dest[i]);
+      }
+      
   } END_LOOP
-   
+      
 #ifdef D_FN_GATHER13
   /* Wait gathers from negative directions, accumulate (negative) */
   /* and the same for the negative 3-rd neighbours */
@@ -439,7 +469,7 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
   FORSOMEPARITY(i,s,parity){
       fatback4 = &(t_fatbacklink[4*i]);
       longback4 = &(t_longbacklink[4*i]);
-      mult_su3_mat_vec_sum_4dir( fatback4,
+      /*mult_su3_mat_vec_sum_4dir( fatback4,
 	    (su3_vector *)gen_pt[XDOWN][i], (su3_vector *)gen_pt[YDOWN][i],
 	    (su3_vector *)gen_pt[ZDOWN][i], (su3_vector *)gen_pt[TDOWN][i],
 	    &tvec );
@@ -448,7 +478,39 @@ void dslash_fn_field_special(su3_vector *src, su3_vector *dest,
 	    (su3_vector *)gen_pt[X3DOWN][i], (su3_vector *)gen_pt[Y3DOWN][i],
 	    (su3_vector *)gen_pt[Z3DOWN][i], (su3_vector *)gen_pt[T3DOWN][i],
 	    &tvec );
-      sub_su3_vector(&(dest[i]), &tvec, &(dest[i]) );
+	    sub_su3_vector(&(dest[i]), &tvec, &(dest[i]) );*/
+
+      CMUL_MULREAL(fatback4[0], (*(complex *)(gen_pt[XDOWN][i])), v_Fermi, add_temp[0]);
+      CMUL_MULREAL(fatback4[1], (*(complex *)(gen_pt[YDOWN][i])), v_Fermi, add_temp[1]);
+#ifdef FOUR_DIM
+      CMUL_MULREAL(fatback4[2], (*(complex *)(gen_pt[ZDOWN][i])), v_Fermi, add_temp[2]);
+#endif 
+      CMUL_MULREAL(fatback4[3], (*(complex *)(gen_pt[TDOWN][i])), v_Fermi, add_temp[3]);
+
+      //tvec1.real = tvec1.imag = 0.0;
+      for(j=0; j<4; j++) {
+#ifndef FOUR_DIM
+	if(j != 2)
+#endif
+	  CSUB(dest[i], add_temp[j], dest[i]);
+      }
+      
+      CMUL_MULREAL(longback4[0], (*(complex *)(gen_pt[X3DOWN][i])), v_Fermi, add_temp[0]);
+      CMUL_MULREAL(longback4[1], (*(complex *)(gen_pt[Y3DOWN][i])), v_Fermi, add_temp[1]);
+#ifdef FOUR_DIM
+      CMUL_MULREAL(longback4[2], (*(complex *)(gen_pt[Z3DOWN][i])), v_Fermi, add_temp[2]);
+#endif 
+      CMUL_MULREAL(longback4[3], (*(complex *)(gen_pt[T3DOWN][i])), v_Fermi, add_temp[3]);
+
+      //tvec2.real = tvec2.imag = 0.0;
+      for(j=0; j<4; j++) {
+#ifndef FOUR_DIM
+	if(j != 2)
+#endif
+	  CSUB(dest[i], add_temp[j], dest[i]);
+      }
+
+
   } END_LOOP 
 
 }

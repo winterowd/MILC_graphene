@@ -171,6 +171,9 @@ double_complex dce_itheta( double theta );
 #define CMUL_MINUS_I(a,b) { (b).real = (a).imag; (b).imag = -(a).real; }
 								/* c = ba     */
 #define CMULREAL(a,b,c) { (c).real = (b) * (a).real; (c).imag = (b)*(a).imag; }
+                                                                 /* d = s*a*b */
+#define CMUL_MULREAL(a,b,s,d) { (d).real = (s)*((a).real*(b).real - (a).imag*(b).imag); \
+                                (d).imag = (s)*((a).real*(b).imag + (a).imag*(b).real; }
 								/* c = a/b    */
 #define CDIVREAL(a,b,c) { (c).real = (a).real/(b); (c).imag = (a).imag/(b); }
 
