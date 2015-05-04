@@ -215,6 +215,7 @@ main( int argc, char **argv )
 	    if(s->t == t)
 	      avg_potential += s->potential[TUP];
 	  }
+	  g_doublesum( &avg_potential );
 	  avg_potential = (double) (avg_potential/((double)nx*ny*nz));
 	  FORALLSITES(i, s) {
 	    if(s->t == t) {
