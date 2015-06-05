@@ -20,18 +20,113 @@
 
 #include "generic_ks_includes_u1.h"	/* definitions files and prototypes */
 
+void sym_shift_field(int dir, complex *src, complex *dest, complex *links) {
+
+  register int i;
+  register site *s;
+  msg_tag *tag[2];
+  complex *tvec;
+
+  tvec = (complex *)malloc(sites_on_node*sizeof(complex));
+
+  tag[0] = start_gather_field( src, sizeof(complex), dir, EVENANDODD, gen_pt[0] );
+
+  FORALLMYSITES(i, s) {    
+    CMULJ_(links[4*i+dir], src[i], tvec[i]);
+  }
+
+  tag[1] = start_gather_field(tvec, sizeof(complex), OPP_DIR(dir), EVENANDODD, gen_pt[1]);
+  wait_gather(tag[0]);
+  FORALLMYSITES(i, s) {
+    CMUL(links[4*i+dir], *(complex *)gen_pt[0][i], dest[i]);
+  }
+  wait_gather(tag[1]);
+
+  FORALLMYSITES(i, s) {
+    CADD(dest[i], *(complex *)gen_pt[1][i], dest[i]); 
+  }
+
+  FORALLMYSITES(i, s) {
+    CMULREAL(dest[i], 0.5, dest[i]);
+  }
+
+  free(tvec);
+
+}//sym_shift_field()
+
+void shift_field_path(int n, int *d, complex *src, complex *dest, complex *links) {
+
+  int i, j;
+  site *s; 
+  complex *tvec;
+  
+  tvec = (complex *)malloc(sites_on_node*sizeof(complex));
+
+  for(j=0; j<n; j++) { //loop over path length
+    if(j==0)
+      sym_shift_field(d[j], src, tvec, links);
+    else
+      sym_shift_field(d[j], dest, tvec, links);
+    FORALLMYSITES(i, s) {
+      dest[i].real = tvec[i].real;
+      dest[i].imag = tvec[i].imag;
+    }
+  }
+
+  free(tvec);
+
+}//shift_field_path()
+
+void three_link_shift(complex *src, complex *dest, complex *links) {
+
+  register int i, j;
+  register site *s;
+  complex *tvec;
+
+  tvec = (complex *)malloc(sites_on_node*sizeof(complex));
+
+  /* All permutation with appropriate sign */
+  struct {
+    int d[3];
+    Real sign ;
+  } p[6]={{{XUP,YUP,TUP},+1.0/6.0},
+	  {{YUP,TUP,XUP},+1.0/6.0},
+	  {{TUP,XUP,YUP},+1.0/6.0},
+	  {{XUP,TUP,YUP},+1.0/6.0},
+	  {{YUP,XUP,TUP},+1.0/6.0},
+	  {{TUP,YUP,XUP},+1.0/6.0}}; /* The factor of 6 accounts for the *
+				* multiplicity of the permutations */
+  FORALLSITES(i, s) {
+    dest[i].real = dest[i].imag = 0.;
+  }
+  for(j=0; j<6; j++) { //loop over paths
+    shift_field_path(3, p[j].d, src, tvec, links);
+    FORALLMYSITES(i, s) {
+      CADD(dest[i], tvec[i], dest[i]);
+    }
+  }
+  
+  free(tvec);
+
+}//diagonal_shift()
+
 void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
 		    ferm_links_u1_t *fn, ferm_links_u1_t *fn_dmdu0){
     Real r_psi_bar_psi_even, i_psi_bar_psi_even;
-    Real  r_psi_bar_psi_odd, i_psi_bar_psi_odd;
+    Real r_psi_bar_psi_odd, i_psi_bar_psi_odd;
+    Real r_haldane_even, i_haldane_even;
+    Real r_haldane_odd, i_haldane_odd;
     Real r_ferm_action;
     /* local variables for accumulators */
     register int i;
     register site *st;
     double rfaction;
     double_complex pbp_e, pbp_o;
+    double_complex haldane_e, haldane_o;
     //double_complex temp_e, temp_o, xsc_e, xsc_o;
     complex *t_fatlink, *t_longlink, temp_mul;
+    complex *temp_vec1, *temp_vec2, *temp_vec3;
+    complex *links;
     //complex *g_rand_temp, *temp_invert, *zzz;
     quark_invert_control qic;
     int my_volume;
@@ -90,9 +185,25 @@ BOMB THE COMPILE
     qic.resid      = rsqprop;
     qic.relresid   = 0;
 
+    //allocate vectors for haldane mass calculation
+    temp_vec1 = (complex *)malloc(sites_on_node*sizeof(complex));
+    temp_vec2 = (complex *)malloc(sites_on_node*sizeof(complex));
+    temp_vec3 = (complex *)malloc(sites_on_node*sizeof(complex));
+    links = (complex *)malloc(sites_on_node*4*sizeof(complex));
+
+    //copy links to field vector without phases 
+    //(assumes phases are in upon entry to function)
+    FORALLUPDIR(dir) {
+      FORALLSITES(i, st) {	
+	links[4*i+dir].real = st->link[dir].real*st->phase[dir];
+	links[4*i+dir].imag = st->link[dir].imag*st->phase[dir];
+      }
+    }
+
     for(jpbp_reps = 0; jpbp_reps < npbp_reps; jpbp_reps++){
       rfaction = (double)0.0;
       pbp_e = pbp_o = dcmplx((double)0.0,(double)0.0);
+      haldane_e = haldane_o = dcmplx((double)0.0,(double)0.0);
       
       /* Make random source, and do inversion */
       /* generate g_rand random; phi_off = M g_rand */
@@ -120,8 +231,18 @@ BOMB THE COMPILE
       clear_latvec_u1(xxx_off,EVENANDODD);
       mat_invert_uml_u1( F_OFFSET(g_rand), xxx_off, phi_off, mass, 
 			       prec, fn );     
-
       
+      FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
+	temp_vec1[i].real = s->g_rand.real;
+	temp_vec1[i].real = s->g_rand.imag;
+	temp_vec3[i].real = temp_vec2[i].real = temp_vec3[i].imag = temp_vec2[i].imag = 0.;
+      }
+      //call routine to shift temp_vec1 and put result in temp_vec2
+      three_link_shift(temp_vec1, temp_vec2, links);
+      //invert on shifted source
+      mat_invert_uml_field_u1( temp_vec2, temp_vec3, &qic, mass, fn);
+      
+
       /*complex *t_src, *t_dest;
       site *s;
       Real vmass_x2 = 2.*mass;
@@ -214,6 +335,9 @@ BOMB THE COMPILE
 	CMULJ_( st->g_rand, *(complex *)F_PT(st,xxx_off), cc);
 	/* cc = su3_dot( &(st->g_rand), (su3_vector *)F_PT(st,xxx_off) ); */
 	CSUM(pbp_e, cc);
+	CMULJ_( st->g_rand, temp_vec3[i], cc);
+	CSUM(haldane_e, cc)
+
 	//CMULJ_( g_rand_temp[i], zzz[i], cc);
 	//CSUM(temp_e, cc); //temp_e contains other term for Tr^2
 #ifdef DM_DU0
@@ -263,6 +387,9 @@ BOMB THE COMPILE
 	CMULJ_( st->g_rand, *(complex *)F_PT(st,xxx_off), cc );
 	/* cc = su3_dot( &(st->g_rand), (su3_vector *)F_PT(st,xxx_off) ); */
 	CSUM(pbp_o, cc);
+	CMULJ_( st->g_rand, temp_vec3[i], cc );
+	CSUM(haldane_o, cc);
+
 	//CMULJ_( g_rand_temp[i], zzz[i], cc);
 	//CSUM(temp_o, cc); //temp_o contains other term for Tr^2
 #ifdef DM_DU0
@@ -310,6 +437,8 @@ BOMB THE COMPILE
       //g_dcomplexsum( &temp_e );      
       g_dcomplexsum( &pbp_o );
       g_dcomplexsum( &pbp_e );
+      g_dcomplexsum( &haldane_o);
+      g_dcomplexsum( &haldane_e);
       g_doublesum( &rfaction );
       
 #ifdef DM_DU0
@@ -325,10 +454,18 @@ BOMB THE COMPILE
       i_psi_bar_psi_odd =  pbp_o.imag*(2.0/(double)my_volume) ;
       r_psi_bar_psi_even =  pbp_e.real*(2.0/(double)my_volume) ;
       i_psi_bar_psi_even =  pbp_e.imag*(2.0/(double)my_volume) ;
+      r_haldane_odd =  haldane_o.real*(2.0/(double)my_volume) ;
+      i_haldane_odd =  haldane_o.imag*(2.0/(double)my_volume) ;
+      r_haldane_even =  haldane_e.real*(2.0/(double)my_volume) ;
+      i_haldane_even =  haldane_e.imag*(2.0/(double)my_volume) ;
       r_ferm_action =  rfaction*(1.0/(double)my_volume) ;
       node0_printf("PBP: mass %e     %e  %e  %e  %e ( %d of %d )\n", mass,
 		   r_psi_bar_psi_even, r_psi_bar_psi_odd,
 		   i_psi_bar_psi_even, i_psi_bar_psi_odd,
+		   jpbp_reps+1, npbp_reps);
+      node0_printf("HALDANE: mass %e     %e  %e  %e  %e ( %d of %d )\n", mass,
+		   r_haldane_even, r_haldane_odd,
+		   i_haldane_even, i_haldane_odd,
 		   jpbp_reps+1, npbp_reps);
       node0_printf("FACTION: mass = %e,  %e ( %d of %d )\n", mass,
 		   r_ferm_action, jpbp_reps+1, npbp_reps);
@@ -459,5 +596,9 @@ BOMB THE COMPILE
       cleanup_gather(tag3);
 #endif
     }
+      free(temp_vec1);
+      free(temp_vec2);
+      free(temp_vec3);
+      free(links);
 }
 
