@@ -184,7 +184,7 @@ int mat_invert_uml_field_u1(complex *src, complex *dst,
   } 
   //printf("After dslash2 norm of preconditioned source on odd sites: %f\n", norm);
   /* dst_e <- (M_adj M)^-1 temp_e  (even sites only) */
-  printf("solve on even sites \n");
+  //printf("solve on even sites \n");
   qic->parity     = EVEN;
   cgn = ks_congrad_field_u1( tmp, dst, qic, mass, fn ); 
   norm = 0.0; //test again
