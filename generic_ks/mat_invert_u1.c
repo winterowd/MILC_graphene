@@ -170,7 +170,7 @@ int mat_invert_uml_field_u1(complex *src, complex *dst,
   FORMYODDSITES(i,s){
     norm += (double)cabs( (src+i) );
   } 
-  printf("After dslash norm of source on odd sites: %f\n", norm);
+  //printf("After dslash norm of source on odd sites: %f\n", norm);
   //printf("precondition inside uml\n");
   FORALLMYSITES(i,s){
     CMULREAL( src[i], -2.0*mass, tmp[i]);
@@ -182,7 +182,7 @@ int mat_invert_uml_field_u1(complex *src, complex *dst,
   FORMYODDSITES(i,s){
     norm += (double)cabs( (tmp+i) );
   } 
-  printf("After dslash2 norm of preconditioned source on odd sites: %f\n", norm);
+  //printf("After dslash2 norm of preconditioned source on odd sites: %f\n", norm);
   /* dst_e <- (M_adj M)^-1 temp_e  (even sites only) */
   printf("solve on even sites \n");
   qic->parity     = EVEN;
@@ -192,7 +192,7 @@ int mat_invert_uml_field_u1(complex *src, complex *dst,
   FORMYODDSITES(i,s){
     norm += (double)cabs( (src+i) );
   } 
-  printf("After ks_congrad norm of source on odd sites: %f\n", norm);
+  //printf("After ks_congrad norm of source on odd sites: %f\n", norm);
   /* reconstruct odd site solution */
   /* dst_o <-  1/2m (Dslash_oe*dst_e + src_o) */
   dslash_fn_field_u1( dst, ttt, ODD, fn );
@@ -203,7 +203,7 @@ int mat_invert_uml_field_u1(complex *src, complex *dst,
   
   /* Polish off odd sites to correct for possible roundoff error */
   /* dst_o <- (M_adj M)^-1 temp_o  (odd sites only) */
-  printf("solve on odd sites \n");
+  //printf("solve on odd sites \n");
   qic->parity = ODD;
   cgn = ks_congrad_field_u1( tmp, dst, qic, mass, fn );
   
