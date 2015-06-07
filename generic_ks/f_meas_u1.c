@@ -454,10 +454,10 @@ BOMB THE COMPILE
       i_psi_bar_psi_odd =  pbp_o.imag*(2.0/(double)my_volume) ;
       r_psi_bar_psi_even =  pbp_e.real*(2.0/(double)my_volume) ;
       i_psi_bar_psi_even =  pbp_e.imag*(2.0/(double)my_volume) ;
-      r_haldane_odd =  haldane_o.real*(2.0/(double)my_volume) ;
-      i_haldane_odd =  haldane_o.imag*(2.0/(double)my_volume) ;
-      r_haldane_even =  haldane_e.real*(2.0/(double)my_volume) ;
-      i_haldane_even =  haldane_e.imag*(2.0/(double)my_volume) ;
+      r_haldane_odd =  haldane_o.real*(1.0/(double)my_volume) ;
+      i_haldane_odd =  haldane_o.imag*(1.0/(double)my_volume) ;
+      r_haldane_even =  haldane_e.real*(1.0/(double)my_volume) ;
+      i_haldane_even =  haldane_e.imag*(1.0/(double)my_volume) ;
       r_ferm_action =  rfaction*(1.0/(double)my_volume) ;
       node0_printf("PBP: mass %e     %e  %e  %e  %e ( %d of %d )\n", mass,
 		   r_psi_bar_psi_even, r_psi_bar_psi_odd,
