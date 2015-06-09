@@ -102,13 +102,14 @@ void three_link_shift(complex *src, complex *dest, complex *links) {
   for(j=0; j<6; j++) { //loop over paths
     shift_field_path(3, p[j].d, src, tvec, links);
     FORALLMYSITES(i, s) {
+      CMULREAL(tvec[i], p[j].sign, tvec[i]);
       CADD(dest[i], tvec[i], dest[i]);
     }
   }
   
   free(tvec);
 
-}//diagonal_shift()
+}//three_link_shift()
 
 void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
 		    ferm_links_u1_t *fn, ferm_links_u1_t *fn_dmdu0){
