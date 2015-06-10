@@ -51,6 +51,8 @@ void sym_shift_field(int dir, complex *src, complex *dest, complex *links) {
   }
 
   free(tvec);
+  cleanup_gather(tag0);
+  cleanup_gather(tag1);
 
 }//sym_shift_field()
 
@@ -136,7 +138,8 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
 #endif
     complex cc;
 #ifdef FOUR_DIM
-    my_volume=volume;
+    my_volume=volume;cleanup_gather(tag0);
+      cleanup_gather(tag1);
 #else
     my_volume=nx*nt*ny;
 #endif
