@@ -51,7 +51,8 @@ void sym_shift_field(int dir, complex *src, complex *dest, complex *links) {
   }
 
   free(tvec);
-  cleanup_gather(tag);
+  cleanup_gather(tag[0]);
+  cleanup_gather(tag[1]);
   
 }//sym_shift_field()
 
