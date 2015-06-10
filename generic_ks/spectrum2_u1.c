@@ -253,7 +253,7 @@ int spectrum2_u1( Real vmass, field_offset temp1, field_offset temp2,
       
     } /* nt-loop */
     for(t=0; t<nt; t++) {
-      printf("DEBUG: %d %d %e\n", isrc, t, pi_ps_prop_temp[t]);
+      //printf("DEBUG: %d %d %e\n", isrc, t, pi_ps_prop_temp[t]);
       pi_ps_prop_temp[t]=0; 
     }
     
