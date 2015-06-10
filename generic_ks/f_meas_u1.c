@@ -235,7 +235,7 @@ BOMB THE COMPILE
       
       FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
 	temp_vec1[i].real = st->g_rand.real;
-	temp_vec1[i].real = st->g_rand.imag;
+	temp_vec1[i].imag = st->g_rand.imag;
 	temp_vec3[i].real = temp_vec2[i].real = temp_vec3[i].imag = temp_vec2[i].imag = 0.;
       }
       //call routine to shift temp_vec1 and put result in temp_vec2
