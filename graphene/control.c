@@ -209,22 +209,24 @@ main( int argc, char **argv )
 	//lattice to be zero
 	rephase( OFF );
 	double avg_potential=0.;
-	int t;
+	int t, z;
 	for(t=0; t<nt; t++) {
-	  FORALLSITES(i, s) {
-	    if(s->t == t)
-	      avg_potential += s->potential[TUP];
-	  }
-	  g_doublesum( &avg_potential );
-	  avg_potential = (double) (avg_potential/((double)nx*ny*nz));
-	  FORALLSITES(i, s) {
-	    if(s->t == t) {
-	      s->potential[TUP] = s->potential[TUP] - avg_potential;
-	      s->link[TUP].real = cos(s->potential[TUP]);
-	      s->link[TUP].imag = sin(s->potential[TUP]);
+	  for(z=0; z<nz; z++) {
+	    FORALLSITES(i, s) {
+	      if(s->t == t && s->z == z)
+		avg_potential += s->potential[TUP];
 	    }
+	    g_doublesum( &avg_potential );
+	    avg_potential = (double) (avg_potential/((double)nx*ny));
+	    FORALLSITES(i, s) {
+	      if(s->t == t && s->z == z) {
+		s->potential[TUP] = s->potential[TUP] - avg_potential;
+		s->link[TUP].real = cos(s->potential[TUP]);
+		s->link[TUP].imag = sin(s->potential[TUP]);
+	      }
+	    }
+	    avg_potential=0.;
 	  }
-	  avg_potential=0.;
 	}
 	/* Fix Landau gauge - gauge links only*/
 	//rephase( OFF );
