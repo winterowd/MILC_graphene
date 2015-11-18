@@ -22,6 +22,7 @@ int main( int argc, char **argv ){
   double chirality ;
   double eigen_sum;
   double eigen_sqr_sum;
+  double IPR, rEV, iEV;
 
   initialize_machine(&argc,&argv);
 #ifdef HAVE_QDP
@@ -79,11 +80,16 @@ int main( int argc, char **argv ){
 	 * normalized the EVENANDODD vector to 1 and then not devide
 	 * by to.  The measure_chirality routine assumes vectors
 	 * normalized to 1.  */
-	//print Eigenvectors
+
+	//compute IPR
+	IPR=0.0;
 	FORALLMYSITES(si,s) {
-	  printf("eigenvec %d %d %d %d %d %e %e\n", i, si, s->x, s->y, s->t, 
-		 eigVec[i][si].real, eigVec[i][si].imag); 
+	  rEV = eigVec[i][si].real; iEV = eigVec[i][si].imag;
+	  IPR += (rEV*rEV + iEV*iEV)*(rEV*rEV + iEV*iEV);
+	  /*node0_printf("eigenvec %d %d %d %d %d %e %e\n", i, si, s->x, s->y, s->t, 
+	    eigVec[i][si].real, eigVec[i][si].imag); */
 	} 
+	node0_printf("IPR %d %e\n", i, IPR);
 	node0_printf("Chirality(%i): %g\n",i,chirality/2) ;
       } 
     free(tmp);
