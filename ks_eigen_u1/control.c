@@ -86,7 +86,7 @@ int main( int argc, char **argv ){
 	norm=0.0;
 	FORALLMYSITES(si,s) {
 	  rEV = eigVec[i][si].real; iEV = eigVec[i][si].imag;
-	  norm += rEv*rEV + iEV*iEV;
+	  norm += rEV*rEV + iEV*iEV;
 	  IPR += (rEV*rEV + iEV*iEV)*(rEV*rEV + iEV*iEV);
 	  /*node0_printf("eigenvec %d %d %d %d %d %e %e\n", i, si, s->x, s->y, s->t, 
 	    eigVec[i][si].real, eigVec[i][si].imag); */
