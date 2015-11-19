@@ -22,7 +22,7 @@ int main( int argc, char **argv ){
   double chirality ;
   double eigen_sum;
   double eigen_sqr_sum;
-  double IPR, rEV, iEV;
+  double IPR, rEV, iEV, norm;
 
   initialize_machine(&argc,&argv);
 #ifdef HAVE_QDP
@@ -83,12 +83,15 @@ int main( int argc, char **argv ){
 
 	//compute IPR
 	IPR=0.0;
+	norm=0.0;
 	FORALLMYSITES(si,s) {
 	  rEV = eigVec[i][si].real; iEV = eigVec[i][si].imag;
+	  norm += rEv*rEV + iEV*iEV;
 	  IPR += (rEV*rEV + iEV*iEV)*(rEV*rEV + iEV*iEV);
 	  /*node0_printf("eigenvec %d %d %d %d %d %e %e\n", i, si, s->x, s->y, s->t, 
 	    eigVec[i][si].real, eigVec[i][si].imag); */
 	} 
+	node0_printf("test_norm %d %e\n", i, norm);
 	node0_printf("IPR %d %e\n", i, IPR);
 	node0_printf("Chirality(%i): %g\n",i,chirality/2) ;
       } 
