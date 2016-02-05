@@ -27,9 +27,9 @@ void prep_haldane_vector( complex *source, int dilute) {
 
   if(dilute == 0) {
     FORALLSITES(i,s) {
-      if( (x%2==0) && (y%2==0) && (z%2==0) ) {
+      if( (s->x%2==0) && (s->y%2==0) && (s->z%2==0) ) {
 	source[i].real = s->g_rand.real;
-	source[i[.imag = s->g_rand.imag;
+	source[i].imag = s->g_rand.imag;
       }	       
       else{
 	source[i].real = source[i].imag = 0.0;
@@ -38,9 +38,9 @@ void prep_haldane_vector( complex *source, int dilute) {
   }
   if(dilute == 1) {
     FORALLSITES(i,s) {
-      if( (x%2==1) && (y%2==0) && (z%2==0) ) {
+      if( (s->x%2==1) && (s->y%2==0) && (s->z%2==0) ) {
 	source[i].real = s->g_rand.real;
-	source[i[.imag = s->g_rand.imag;
+	source[i].imag = s->g_rand.imag;
       }	       
       else{
 	source[i].real = source[i].imag = 0.0;
@@ -49,9 +49,9 @@ void prep_haldane_vector( complex *source, int dilute) {
   } 
   if(dilute == 2) {
     FORALLSITES(i,s) {
-      if( (x%2==0) && (y%2==1) && (z%2==0) ) {
+      if( (s->x%2==0) && (s->y%2==1) && (s->z%2==0) ) {
 	source[i].real = s->g_rand.real;
-	source[i[.imag = s->g_rand.imag;
+	source[i].imag = s->g_rand.imag;
       }	       
       else{
 	source[i].real = source[i].imag = 0.0;
@@ -60,9 +60,9 @@ void prep_haldane_vector( complex *source, int dilute) {
   }
  if(dilute == 3) {
     FORALLSITES(i,s) {
-      if( (x%2==0) && (y%2==0) && (z%2==1) ) {
+      if( (s->x%2==0) && (s->y%2==0) && (s->z%2==1) ) {
 	source[i].real = s->g_rand.real;
-	source[i[.imag = s->g_rand.imag;
+	source[i].imag = s->g_rand.imag;
       }	       
       else{
 	source[i].real = source[i].imag = 0.0;
@@ -71,9 +71,9 @@ void prep_haldane_vector( complex *source, int dilute) {
   }
  if(dilute == 4) {
     FORALLSITES(i,s) {
-      if( (x%2==1) && (y%2==1) && (z%2==0) ) {
+      if( (s->x%2==1) && (s->y%2==1) && (s->z%2==0) ) {
 	source[i].real = s->g_rand.real;
-	source[i[.imag = s->g_rand.imag;
+	source[i].imag = s->g_rand.imag;
       }	       
       else{
 	source[i].real = source[i].imag = 0.0;
@@ -82,9 +82,9 @@ void prep_haldane_vector( complex *source, int dilute) {
   }
  if(dilute == 5) {
     FORALLSITES(i,s) {
-      if( (x%2==1) && (y%2==0) && (z%2==1) ) {
+      if( (s->x%2==1) && (s->y%2==0) && (s->z%2==1) ) {
 	source[i].real = s->g_rand.real;
-	source[i[.imag = s->g_rand.imag;
+	source[i].imag = s->g_rand.imag;
       }	       
       else{
 	source[i].real = source[i].imag = 0.0;
@@ -93,9 +93,9 @@ void prep_haldane_vector( complex *source, int dilute) {
   }
  if(dilute == 6) {
     FORALLSITES(i,s) {
-      if( (x%2==0) && (y%2==1) && (z%2==1) ) {
+      if( (s->x%2==0) && (s->y%2==1) && (s->z%2==1) ) {
 	source[i].real = s->g_rand.real;
-	source[i[.imag = s->g_rand.imag;
+	source[i].imag = s->g_rand.imag;
       }	       
       else{
 	source[i].real = source[i].imag = 0.0;
@@ -104,9 +104,9 @@ void prep_haldane_vector( complex *source, int dilute) {
   }
  if(dilute == 7) {
     FORALLSITES(i,s) {
-      if( (x%2==1) && (y%2==1) && (z%2==1) ) {
+      if( (s->x%2==1) && (s->y%2==1) && (s->z%2==1) ) {
 	source[i].real = s->g_rand.real;
-	source[i[.imag = s->g_rand.imag;
+	source[i].imag = s->g_rand.imag;
       }	       
       else{
 	source[i].real = source[i].imag = 0.0;
@@ -334,7 +334,7 @@ BOMB THE COMPILE
 
       //prep_haldane_vector(temp_vec1, ivec_dilute)
       FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
-	if( (st->x%2==0) && (st->y%2==0) && (st->z%2==0) ) { //only do source at one corner of cube for now (02/04/16)
+	if( (st->x%4==0) && (st->y%4==0) && (st->z%4==0) ) { //only do source at one corner of cube for now (02/04/16)
 	  temp_vec1[i].real = st->g_rand.real;
 	  temp_vec1[i].imag = st->g_rand.imag;
 	}
