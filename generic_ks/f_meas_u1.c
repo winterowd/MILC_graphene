@@ -20,102 +20,6 @@
 
 #include "generic_ks_includes_u1.h"	/* definitions files and prototypes */
 
-void prep_haldane_vector( complex *source, int dilute) {
-
-  register int i;
-  register site *s;
-
-  if(dilute == 0) {
-    FORALLSITES(i,s) {
-      if( (s->x%2==0) && (s->y%2==0) && (s->z%2==0) ) {
-	source[i].real = s->g_rand.real;
-	source[i].imag = s->g_rand.imag;
-      }	       
-      else{
-	source[i].real = source[i].imag = 0.0;
-      }
-    }
-  }
-  if(dilute == 1) {
-    FORALLSITES(i,s) {
-      if( (s->x%2==1) && (s->y%2==0) && (s->z%2==0) ) {
-	source[i].real = s->g_rand.real;
-	source[i].imag = s->g_rand.imag;
-      }	       
-      else{
-	source[i].real = source[i].imag = 0.0;
-      }
-    }
-  } 
-  if(dilute == 2) {
-    FORALLSITES(i,s) {
-      if( (s->x%2==0) && (s->y%2==1) && (s->z%2==0) ) {
-	source[i].real = s->g_rand.real;
-	source[i].imag = s->g_rand.imag;
-      }	       
-      else{
-	source[i].real = source[i].imag = 0.0;
-      }
-    }
-  }
- if(dilute == 3) {
-    FORALLSITES(i,s) {
-      if( (s->x%2==0) && (s->y%2==0) && (s->z%2==1) ) {
-	source[i].real = s->g_rand.real;
-	source[i].imag = s->g_rand.imag;
-      }	       
-      else{
-	source[i].real = source[i].imag = 0.0;
-      }
-    }
-  }
- if(dilute == 4) {
-    FORALLSITES(i,s) {
-      if( (s->x%2==1) && (s->y%2==1) && (s->z%2==0) ) {
-	source[i].real = s->g_rand.real;
-	source[i].imag = s->g_rand.imag;
-      }	       
-      else{
-	source[i].real = source[i].imag = 0.0;
-      }
-    }
-  }
- if(dilute == 5) {
-    FORALLSITES(i,s) {
-      if( (s->x%2==1) && (s->y%2==0) && (s->z%2==1) ) {
-	source[i].real = s->g_rand.real;
-	source[i].imag = s->g_rand.imag;
-      }	       
-      else{
-	source[i].real = source[i].imag = 0.0;
-      }
-    }
-  }
- if(dilute == 6) {
-    FORALLSITES(i,s) {
-      if( (s->x%2==0) && (s->y%2==1) && (s->z%2==1) ) {
-	source[i].real = s->g_rand.real;
-	source[i].imag = s->g_rand.imag;
-      }	       
-      else{
-	source[i].real = source[i].imag = 0.0;
-      }
-    }
-  }
- if(dilute == 7) {
-    FORALLSITES(i,s) {
-      if( (s->x%2==1) && (s->y%2==1) && (s->z%2==1) ) {
-	source[i].real = s->g_rand.real;
-	source[i].imag = s->g_rand.imag;
-      }	       
-      else{
-	source[i].real = source[i].imag = 0.0;
-      }
-    }
-  }
-      
-}//prep_haldane_dilution()
-
 void sym_shift_field(int dir, complex *src, complex *dest, complex *links) {
 
   register int i;
@@ -229,6 +133,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     //complex *g_rand_temp, *temp_invert, *zzz;
     quark_invert_control qic;
     int my_volume;
+    int xdisp, ydisp, tdisp;
 #ifdef NPBP_REPS
     double pbp_pbp;
 #endif
@@ -237,7 +142,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     my_volume=volume;cleanup_gather(tag0);
       cleanup_gather(tag1);
 #else
-    my_volume=nx*nt*ny;
+    my_volume=(double)(nx*nt*ny/(sep*sep*sep));
 #endif
 
 #ifdef DM_DU0
@@ -301,6 +206,9 @@ BOMB THE COMPILE
     }
 
     for(jpbp_reps = 0; jpbp_reps < npbp_reps; jpbp_reps++){
+
+      for(xdisp=0; xdisp<stride; xdisp+=sep) for(ydisp=0; ydisp<stride; ydisp+=sep) for(tdisp=0; tdisp<stride; tdisp+=sep) {
+
       rfaction = (double)0.0;
       pbp_e = pbp_o = dcmplx((double)0.0,(double)0.0);
       haldane_e = haldane_o = dcmplx((double)0.0,(double)0.0);
@@ -324,6 +232,18 @@ BOMB THE COMPILE
 #else
       //z2rsource_imp( phi_off, mass, EVENANDODD, fn ); LEAVE OUT FOR NOW 10/10
 #endif
+      FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
+	if( (st->x%stride==xdisp) && (st->y%stride==ydisp) && (st->t%stride==tdisp) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
+	  temp_vec1[i].real = st->g_rand.real;
+	  temp_vec1[i].imag = st->g_rand.imag;
+	}
+	else {
+	  temp_vec1[i].real = st->g_rand.real = 0.0;
+	  temp_vec1[i].imag = st->g_rand.real = 0.0;
+	}
+	temp_vec3[i].real = temp_vec2[i].real = temp_vec3[i].imag = temp_vec2[i].imag = 0.;
+      }
+      
       /* phi_off = M g_rand (still) */
       /* theta_off = M g_rand_temp
       /* xxx_off = M^{-1} g_rand */
@@ -332,18 +252,6 @@ BOMB THE COMPILE
       mat_invert_uml_u1( F_OFFSET(g_rand), xxx_off, phi_off, mass, 
 			       prec, fn );     
 
-      //prep_haldane_vector(temp_vec1, ivec_dilute)
-      FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
-	if( (st->x%4==0) && (st->y%4==0) && (st->z%4==0) ) { //only do source at one corner of cube for now (02/04/16)
-	  temp_vec1[i].real = st->g_rand.real;
-	  temp_vec1[i].imag = st->g_rand.imag;
-	}
-	else {
-	  temp_vec1[i].real = 0.0;
-	  temp_vec1[i].imag = 0.0;
-	}
-	temp_vec3[i].real = temp_vec2[i].real = temp_vec3[i].imag = temp_vec2[i].imag = 0.;
-      }
       //call routine to shift temp_vec1 and put result in temp_vec2
       three_link_shift(temp_vec1, temp_vec2, links);
       //invert on shifted source
@@ -702,7 +610,10 @@ BOMB THE COMPILE
       cleanup_gather(tag2);
       cleanup_gather(tag3);
 #endif
+      }
+
     }
+
       free(temp_vec1);
       free(temp_vec2);
       free(temp_vec3);

@@ -167,6 +167,8 @@ EXTERN	int iseed;		/* random number seed */
 EXTERN	int warms,trajecs,steps,niter,nrestart,propinterval;
 EXTERN  int npbp_reps_in;
 EXTERN  int prec_pbp;  /* Precisiong of pbp measurements */
+EXTERN  int stride;
+EXTERN  int sep;
 EXTERN  int dyn_flavors[MAX_DYN_MASSES]; 
 #ifdef ONEMASS
 EXTERN  int nflavors;

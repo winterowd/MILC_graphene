@@ -45,6 +45,8 @@ typedef struct {
         Real N_b; /* external magnetic field quantum number */
 #endif
         Real v_Fermi; /* Fermi velocity */
+        int stride; /* dilution stride */ 
+        int sep; /* separation between diluted sources */  
 	int niter; 	/* maximum number of c.g. iterations */
         int nrestart;   /* maximum number of c.g. restarts */
         int npbp_reps_in;   /* Number of random sources */
