@@ -142,7 +142,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     my_volume=volume;cleanup_gather(tag0);
       cleanup_gather(tag1);
 #else
-    my_volume=(double)(nx*nt*ny/(sep*sep*sep));
+    my_volume=(double)(nx*nt*ny);
 #endif
 
 #ifdef DM_DU0
@@ -202,6 +202,7 @@ BOMB THE COMPILE
       FORALLSITES(i, st) {	
 	links[4*i+dir].real = st->link[dir].real*st->phase[dir];
 	links[4*i+dir].imag = st->link[dir].imag*st->phase[dir];
+	node0_printf("link: %d %d %d %d %d %e %e\n", dir, st->x, st->y, st->z, st->t, links[4*i+dir].real, links[4*i+dir].imag);
       }
     }
 
@@ -234,8 +235,10 @@ BOMB THE COMPILE
 #endif
       FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
 	if( (st->x%stride==xdisp) && (st->y%stride==ydisp) && (st->t%stride==tdisp) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
-	  temp_vec1[i].real = st->g_rand.real;
-	  temp_vec1[i].imag = st->g_rand.imag;
+	  //temp_vec1[i].real = st->g_rand.real;
+	  //temp_vec1[i].imag = st->g_rand.imag;
+	  temp_vec1[i].real = 1.0;
+	  temp_vec1[i].imag = 0.0;
 	}
 	else {
 	  temp_vec1[i].real = st->g_rand.real = 0.0;
@@ -350,7 +353,7 @@ BOMB THE COMPILE
 	CMULJ_( st->g_rand, *(complex *)F_PT(st,xxx_off), cc);
 	/* cc = su3_dot( &(st->g_rand), (su3_vector *)F_PT(st,xxx_off) ); */
 	CSUM(pbp_e, cc);
-	CMULJ_( st->g_rand, temp_vec3[i], cc);
+	CMULJ_( temp_vec1[i], temp_vec3[i], cc);
 	CSUM(haldane_e, cc)
 
 	//CMULJ_( g_rand_temp[i], zzz[i], cc);
@@ -402,7 +405,7 @@ BOMB THE COMPILE
 	CMULJ_( st->g_rand, *(complex *)F_PT(st,xxx_off), cc );
 	/* cc = su3_dot( &(st->g_rand), (su3_vector *)F_PT(st,xxx_off) ); */
 	CSUM(pbp_o, cc);
-	CMULJ_( st->g_rand, temp_vec3[i], cc );
+	CMULJ_( temp_vec1[i], temp_vec3[i], cc );
 	CSUM(haldane_o, cc);
 
 	//CMULJ_( g_rand_temp[i], zzz[i], cc);
