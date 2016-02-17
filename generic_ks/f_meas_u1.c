@@ -142,7 +142,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     my_volume=volume;cleanup_gather(tag0);
       cleanup_gather(tag1);
 #else
-    my_volume=(double)(nx*nt*ny/(sep*sep*sep));
+    my_volume=(double)(nx*nt*ny);
 #endif
 
 #ifdef DM_DU0
@@ -350,7 +350,7 @@ BOMB THE COMPILE
 	CMULJ_( st->g_rand, *(complex *)F_PT(st,xxx_off), cc);
 	/* cc = su3_dot( &(st->g_rand), (su3_vector *)F_PT(st,xxx_off) ); */
 	CSUM(pbp_e, cc);
-	CMULJ_( st->g_rand, temp_vec3[i], cc);
+	CMULJ_( temp_vec1[i], temp_vec3[i], cc);
 	CSUM(haldane_e, cc)
 
 	//CMULJ_( g_rand_temp[i], zzz[i], cc);
@@ -402,7 +402,7 @@ BOMB THE COMPILE
 	CMULJ_( st->g_rand, *(complex *)F_PT(st,xxx_off), cc );
 	/* cc = su3_dot( &(st->g_rand), (su3_vector *)F_PT(st,xxx_off) ); */
 	CSUM(pbp_o, cc);
-	CMULJ_( st->g_rand, temp_vec3[i], cc );
+	CMULJ_( temp_vec1[i], temp_vec3[i], cc );
 	CSUM(haldane_o, cc);
 
 	//CMULJ_( g_rand_temp[i], zzz[i], cc);
