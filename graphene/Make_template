@@ -273,7 +273,7 @@ graphene_mag_hmc::
 
 graphene_spectrum::
 	${MAKE} -f ${MAKEFILE} target "MYTARGET= $@" \
-	"DEFINES= -DFN -DONEMASS -DPHI_ALGORITHM -DHMC_ALGORITHM -DWANT_U1 -DNPBP_REPS -DNON_COMPACT -DDRUT_DEBUG -DSPECTRUM" \
+	"DEFINES= -DFN -DONEMASS -DPHI_ALGORITHM -DHMC_ALGORITHM -DWANT_U1 -DNPBP_REPS -DNON_COMPACT -DDRUT_DEBUG -DSPECTRUM -DEXT_FIELD" \
 	"GAUGE = plaquette_action.h" \
 	"QUARK = asqtad_action.h" \
 	"EXTRA_OBJECTS = ${ASQFORCE} ${SYMZK1FORCE} quark_stuff.o update_onemass_u1.o d_action_u1.o spectrum2_u1.o spectrum_s.o"
