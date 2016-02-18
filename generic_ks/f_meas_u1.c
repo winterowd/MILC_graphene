@@ -142,7 +142,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     my_volume=volume;cleanup_gather(tag0);
       cleanup_gather(tag1);
 #else
-    my_volume=(double)(nx*nt*ny);
+    my_volume=(double)((nx*nt*ny)/(stride*stride*stride));
 #endif
 
 #ifdef DM_DU0
