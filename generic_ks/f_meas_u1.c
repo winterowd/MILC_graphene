@@ -235,7 +235,7 @@ BOMB THE COMPILE
       FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
 	if( (st->x==xdisp) && (st->y==ydisp) && (st->t==tdisp) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
 	  temp_vec1[i].real = 1.0;
-	  temp_vec1[i].imag = 0.0
+	  temp_vec1[i].imag = 0.0;
 	}
 	else {
 	  temp_vec1[i].real = 0.0;
