@@ -142,7 +142,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     my_volume=volume;cleanup_gather(tag0);
       cleanup_gather(tag1);
 #else
-    my_volume=(double)((nx*nt*ny)/(stride*stride*stride));
+    my_volume=(double)(nx*nt*ny);
 #endif
 
 #ifdef DM_DU0
@@ -207,7 +207,7 @@ BOMB THE COMPILE
 
     for(jpbp_reps = 0; jpbp_reps < npbp_reps; jpbp_reps++){
 
-      for(xdisp=0; xdisp<stride; xdisp+=sep) for(ydisp=0; ydisp<stride; ydisp+=sep) for(tdisp=0; tdisp<stride; tdisp+=sep) {
+      for(xdisp=0; xdisp<nx; xdisp+=sep) for(ydisp=0; ydisp<ny; ydisp+=sep) for(tdisp=0; tdisp<nt; tdisp+=sep) {
 
       rfaction = (double)0.0;
       pbp_e = pbp_o = dcmplx((double)0.0,(double)0.0);
@@ -233,13 +233,13 @@ BOMB THE COMPILE
       //z2rsource_imp( phi_off, mass, EVENANDODD, fn ); LEAVE OUT FOR NOW 10/10
 #endif
       FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
-	if( (st->x%stride==xdisp) && (st->y%stride==ydisp) && (st->t%stride==tdisp) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
-	  temp_vec1[i].real = st->g_rand.real;
-	  temp_vec1[i].imag = st->g_rand.imag;
+	if( (st->x==xdisp) && (st->y==ydisp) && (st->t==tdisp) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
+	  temp_vec1[i].real = 1.0;
+	  temp_vec1[i].imag = 0.0
 	}
 	else {
-	  temp_vec1[i].real = st->g_rand.real = 0.0;
-	  temp_vec1[i].imag = st->g_rand.real = 0.0;
+	  temp_vec1[i].real = 0.0;
+	  temp_vec1[i].imag = 0.0;
 	}
 	temp_vec3[i].real = temp_vec2[i].real = temp_vec3[i].imag = temp_vec2[i].imag = 0.;
       }
@@ -254,6 +254,12 @@ BOMB THE COMPILE
 
       //call routine to shift temp_vec1 and put result in temp_vec2
       three_link_shift(temp_vec1, temp_vec2, links);
+      FORALLSITES(i,st) {
+	if((st->x!=(xdisp+1)) || (st->y!=(ydisp+1)) || (st->t!=(tdisp+1))) {
+	  temp_vec2[i].real = 0.0;
+	  temp_vec2[i].imag = 0.0;
+	}
+      }
       //invert on shifted source
       mat_invert_uml_field_u1( temp_vec2, temp_vec3, &qic, mass, fn);
       
@@ -469,10 +475,10 @@ BOMB THE COMPILE
       i_psi_bar_psi_odd =  pbp_o.imag*(2.0/(double)my_volume) ;
       r_psi_bar_psi_even =  pbp_e.real*(2.0/(double)my_volume) ;
       i_psi_bar_psi_even =  pbp_e.imag*(2.0/(double)my_volume) ;
-      r_haldane_odd =  haldane_o.real*(1.0/(double)my_volume) ;
-      i_haldane_odd =  haldane_o.imag*(1.0/(double)my_volume) ;
-      r_haldane_even =  haldane_e.real*(1.0/(double)my_volume) ;
-      i_haldane_even =  haldane_e.imag*(1.0/(double)my_volume) ;
+      r_haldane_odd =  haldane_o.real;
+      i_haldane_odd =  haldane_o.imag;
+      r_haldane_even =  haldane_e.real;
+      i_haldane_even =  haldane_e.imag;
       r_ferm_action =  rfaction*(1.0/(double)my_volume) ;
       node0_printf("PBP: mass %e     %e  %e  %e  %e ( %d of %d )\n", mass,
 		   r_psi_bar_psi_even, r_psi_bar_psi_odd,

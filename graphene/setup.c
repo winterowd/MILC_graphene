@@ -334,7 +334,7 @@ readin(int prompt)
     IF_OK status += get_i(stdin, prompt,"npbp_reps", &par_buf.npbp_reps_in );
     IF_OK status += get_i(stdin, prompt,"prec_pbp", &par_buf.prec_pbp );
 #endif
-    IF_OK status += get_i(stdin, prompt,"stride", &par_buf.stride); 
+    //IF_OK status += get_i(stdin, prompt,"stride", &par_buf.stride); 
     IF_OK status += get_i(stdin, prompt,"sep", &par_buf.sep);
 #ifdef SPECTRUM
     /* request list for spectral measurments */
@@ -409,7 +409,7 @@ readin(int prompt)
   nrestart = par_buf.nrestart;
   npbp_reps_in = par_buf.npbp_reps_in;
   prec_pbp = par_buf.prec_pbp;
-  stride = par_buf.stride;
+  //stride = par_buf.stride;
   sep = par_buf.sep;
   rsqmin = par_buf.rsqmin;
   rsqprop = par_buf.rsqprop;
