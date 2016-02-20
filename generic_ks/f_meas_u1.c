@@ -134,6 +134,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     quark_invert_control qic;
     int my_volume;
     int xdisp, ydisp, tdisp;
+    int xcorner, ycorner, tcorner;
 #ifdef NPBP_REPS
     double pbp_pbp;
 #endif
@@ -209,7 +210,8 @@ BOMB THE COMPILE
     for(jpbp_reps = 0; jpbp_reps < npbp_reps; jpbp_reps++){
 
       for(xdisp=0; xdisp<stride; xdisp+=sep) for(ydisp=0; ydisp<stride; ydisp+=sep) for(tdisp=0; tdisp<stride; tdisp+=sep) {
-
+      for(xcorner=-1; xcorner<2; xcorner+=2) for(ycorner=-1; ycorner<2; ycorner+=2) for(tcorner=-1; tcorner<2; tcorner+=2) {
+	    
       rfaction = (double)0.0;
       pbp_e = pbp_o = dcmplx((double)0.0,(double)0.0);
       haldane_e = haldane_o = dcmplx((double)0.0,(double)0.0);
@@ -258,12 +260,13 @@ BOMB THE COMPILE
 
       //call routine to shift temp_vec1 and put result in temp_vec2
       three_link_shift(temp_vec1, temp_vec2, links);
-      FORALLSITES(i,st) {
-	if((st->x%stride!=(xdisp+1)) || (st->y%stride!=(ydisp+1)) || (st->t%stride!=(tdisp+1))) {
+      FORALLMYSITES(i,st) {
+	if((st->x%stride!=(xdisp+nx+xcorner)%nx) || (st->y%stride!=(ydisp+ny+ycorner)%ny) || (st->t%stride!=(tdisp+nt+tcorner)%nt)) {
 	  temp_vec2[i].real = 0.0;
 	  temp_vec2[i].imag = 0.0;
 	}
-	printf("temp_vec2 %d %d %d %d %e %e\n", st->x, st->y, st->z, st->t, temp_vec2[i].real, temp_vec2[i].imag);
+	else 
+	  printf("temp_vec2 %d %d %d %d %e %e\n", st->x, st->y, st->z, st->t, temp_vec2[i].real, temp_vec2[i].imag);
 
       }
       //invert on shifted source
@@ -623,7 +626,7 @@ BOMB THE COMPILE
       cleanup_gather(tag3);
 #endif
       }
-
+      }
     }
 
       free(temp_vec1);
