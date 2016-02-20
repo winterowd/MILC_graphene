@@ -202,7 +202,7 @@ BOMB THE COMPILE
       FORALLSITES(i, st) {	
 	links[4*i+dir].real = st->link[dir].real*st->phase[dir];
 	links[4*i+dir].imag = st->link[dir].imag*st->phase[dir];
-	node0_printf("link: %d %d %d %d %d %e %e\n", dir, st->x, st->y, st->z, st->t, links[4*i+dir].real, links[4*i+dir].imag);
+	printf("link: %d %d %d %d %d %e %e\n", dir, st->x, st->y, st->z, st->t, links[4*i+dir].real, links[4*i+dir].imag);
       }
     }
 
@@ -237,6 +237,7 @@ BOMB THE COMPILE
 	if( (st->x%stride==xdisp) && (st->y%stride==ydisp) && (st->t%stride==tdisp) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
 	  //temp_vec1[i].real = st->g_rand.real;
 	  //temp_vec1[i].imag = st->g_rand.imag;
+	  printf("point_source at %d %d %d\n", st->x, st->y, st->t);
 	  temp_vec1[i].real = 1.0;
 	  temp_vec1[i].imag = 0.0;
 	}
@@ -257,6 +258,14 @@ BOMB THE COMPILE
 
       //call routine to shift temp_vec1 and put result in temp_vec2
       three_link_shift(temp_vec1, temp_vec2, links);
+      FORALLSITES(i,st) {
+	if((st->x%stride!=(xdisp+1)) || (st->y%stride!=(ydisp+1)) || (st->t%stride!=(tdisp+1))) {
+	  temp_vec2[i].real = 0.0;
+	  temp_vec2[i].imag = 0.0;
+	}
+	printf("temp_vec2 %d %d %d %d %e %e\n", st->x, st->y, st->z, st->t, temp_vec2[i].real, temp_vec2[i].imag);
+
+      }
       //invert on shifted source
       mat_invert_uml_field_u1( temp_vec2, temp_vec3, &qic, mass, fn);
       
