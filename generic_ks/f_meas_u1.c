@@ -254,12 +254,12 @@ BOMB THE COMPILE
 
       //call routine to shift temp_vec1 and put result in temp_vec2
       three_link_shift(temp_vec1, temp_vec2, links);
-      FORALLSITES(i,st) {
+      /*FORALLSITES(i,st) {
 	if((st->x!=(xdisp+1)) || (st->y!=(ydisp+1)) || (st->t!=(tdisp+1))) {
 	  temp_vec2[i].real = 0.0;
 	  temp_vec2[i].imag = 0.0;
 	}
-      }
+	}*/
       //invert on shifted source
       mat_invert_uml_field_u1( temp_vec2, temp_vec3, &qic, mass, fn);
       
