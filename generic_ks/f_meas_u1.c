@@ -84,8 +84,7 @@ void three_link_shift(complex *src, complex *dest, complex *links) {
   register int i, j;
   register site *s;
   complex *tvec;
-  int eta[3];
-
+  
   tvec = (complex *)malloc(sites_on_node*sizeof(complex));
 
   /* All permutation with appropriate sign */
@@ -99,10 +98,6 @@ void three_link_shift(complex *src, complex *dest, complex *links) {
 	  {{YUP,XUP,TUP},+1.0/6.0},
 	  {{TUP,YUP,XUP},+1.0/6.0}}; /* The factor of 6 accounts for the *
 				* multiplicity of the permutations */
-  eta[0] = st->x - 2*((int)(st->x)/2);
-  eta[1] = st->y - 2*((int)(st->y)/2);
-  eta[2] = st->t - 2*((int)(st->t)/2);
-  printf("eta %d %d %d\n", eta[0], eta[1], eta[2]);
   FORALLSITES(i, s) {
     dest[i].real = dest[i].imag = 0.;
   }
@@ -141,6 +136,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     int xdisp, ydisp, tdisp;
     int xcorner, ycorner, tcorner;
     int xoppcorner, yoppcorner, toppcorner;
+    int eta[3];
 #ifdef NPBP_REPS
     double pbp_pbp;
 #endif
@@ -249,6 +245,10 @@ BOMB THE COMPILE
 	  printf("opp_corner at %d %d %d\n", xdisp+xoppcorner, ydisp+yoppcorner, tdisp+toppcorner);
 	  temp_vec1[i].real = 1.0;
 	  temp_vec1[i].imag = 0.0;
+	  eta[0] = st->x - 2*((int)(st->x)/2);
+	  eta[1] = st->y - 2*((int)(st->y)/2);
+	  eta[2] = st->t - 2*((int)(st->t)/2);
+	  printf("eta %d %d %d\n", eta[0], eta[1], eta[2]);
 	}
 	else {
 	  temp_vec1[i].real = st->g_rand.real = 0.0;
