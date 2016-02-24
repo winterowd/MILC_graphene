@@ -135,6 +135,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     int my_volume;
     int xdisp, ydisp, tdisp;
     int xcorner, ycorner, tcorner;
+    int xoppcorner, yoppcorner, toppcorner;
 #ifdef NPBP_REPS
     double pbp_pbp;
 #endif
@@ -209,8 +210,8 @@ BOMB THE COMPILE
 
     for(jpbp_reps = 0; jpbp_reps < npbp_reps; jpbp_reps++){
 
-      for(xdisp=0; xdisp<stride; xdisp+=sep) for(ydisp=0; ydisp<stride; ydisp+=sep) for(tdisp=0; tdisp<stride; tdisp+=sep) {
-      for(xcorner=-1; xcorner<2; xcorner+=2) for(ycorner=-1; ycorner<2; ycorner+=2) for(tcorner=-1; tcorner<2; tcorner+=2) {
+      for(xdisp=0; xdisp<nx; xdisp+=2) for(ydisp=0; ydisp<ny; ydisp+=2) for(tdisp=0; tdisp<nt; tdisp+=2) {
+	    for(xcorner=0, xoppcorner=1; xcorner<2; xcorner++, xoppcorner-=2) for(ycorner=0, yoppcorner=1; ycorner<2; ycorner++, yoppcorner-=2) for(tcorner=0, toppcorner=1; tcorner<2; tcorner++, toppcorner-=2) {
 	    
       rfaction = (double)0.0;
       pbp_e = pbp_o = dcmplx((double)0.0,(double)0.0);
@@ -236,7 +237,7 @@ BOMB THE COMPILE
       //z2rsource_imp( phi_off, mass, EVENANDODD, fn ); LEAVE OUT FOR NOW 10/10
 #endif
       FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
-	if( (st->x%stride==xdisp) && (st->y%stride==ydisp) && (st->t%stride==tdisp) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
+	if( (st->x==(xdisp+xcorner)) && (st->y%stride==(ydisp+ycorner)) && (st->t%stride==(tdisp+tcorner)) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
 	  //temp_vec1[i].real = st->g_rand.real;
 	  //temp_vec1[i].imag = st->g_rand.imag;
 	  printf("point_source at %d %d %d\n", st->x, st->y, st->t);
@@ -261,7 +262,7 @@ BOMB THE COMPILE
       //call routine to shift temp_vec1 and put result in temp_vec2
       three_link_shift(temp_vec1, temp_vec2, links);
       FORALLMYSITES(i,st) {
-	if((st->x%stride!=(xdisp+nx+xcorner)%nx) || (st->y%stride!=(ydisp+ny+ycorner)%ny) || (st->t%stride!=(tdisp+nt+tcorner)%nt)) {
+	if((st->x!=(xdisp+xoppcorner)) || (st->y!=(ydisp+yoppcorner)) || (st->t!=(tdisp+toppcorner))) {
 	  temp_vec2[i].real = 0.0;
 	  temp_vec2[i].imag = 0.0;
 	}
