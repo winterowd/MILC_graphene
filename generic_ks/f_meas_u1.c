@@ -84,6 +84,7 @@ void three_link_shift(complex *src, complex *dest, complex *links) {
   register int i, j;
   register site *s;
   complex *tvec;
+  int eta[3];
 
   tvec = (complex *)malloc(sites_on_node*sizeof(complex));
 
@@ -98,6 +99,10 @@ void three_link_shift(complex *src, complex *dest, complex *links) {
 	  {{YUP,XUP,TUP},+1.0/6.0},
 	  {{TUP,YUP,XUP},+1.0/6.0}}; /* The factor of 6 accounts for the *
 				* multiplicity of the permutations */
+  eta[0] = st->x - 2*((int)(st->x)/2);
+  eta[1] = st->y - 2*((int)(st->y)/2);
+  eta[2] = st->t - 2*((int)(st->t)/2);
+  printf("eta %d %d %d\n", eta[0], eta[1], eta[2]);
   FORALLSITES(i, s) {
     dest[i].real = dest[i].imag = 0.;
   }
