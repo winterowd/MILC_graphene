@@ -204,14 +204,14 @@ BOMB THE COMPILE
       FORALLSITES(i, st) {	
 	links[4*i+dir].real = st->link[dir].real*st->phase[dir];
 	links[4*i+dir].imag = st->link[dir].imag*st->phase[dir];
-	printf("link: %d %d %d %d %d %e %e\n", dir, st->x, st->y, st->z, st->t, links[4*i+dir].real, links[4*i+dir].imag);
+	//printf("link: %d %d %d %d %d %e %e\n", dir, st->x, st->y, st->z, st->t, links[4*i+dir].real, links[4*i+dir].imag);
       }
     }
 
     for(jpbp_reps = 0; jpbp_reps < npbp_reps; jpbp_reps++){
 
       for(xdisp=0; xdisp<nx; xdisp+=2) for(ydisp=0; ydisp<ny; ydisp+=2) for(tdisp=0; tdisp<nt; tdisp+=2) {
-	    for(xcorner=0, xoppcorner=1; xcorner<2; xcorner++, xoppcorner-=2) for(ycorner=0, yoppcorner=1; ycorner<2; ycorner++, yoppcorner-=2) for(tcorner=0, toppcorner=1; tcorner<2; tcorner++, toppcorner-=2) {
+	    for(xcorner=0, xoppcorner=1; xcorner<2; xcorner++, xoppcorner--) for(ycorner=0, yoppcorner=1; ycorner<2; ycorner++, yoppcorner--) for(tcorner=0, toppcorner=1; tcorner<2; tcorner++, toppcorner--) {
 	    
       rfaction = (double)0.0;
       pbp_e = pbp_o = dcmplx((double)0.0,(double)0.0);
@@ -241,7 +241,7 @@ BOMB THE COMPILE
 	  //temp_vec1[i].real = st->g_rand.real;
 	  //temp_vec1[i].imag = st->g_rand.imag;
 	  printf("point_source at %d %d %d\n", st->x, st->y, st->t);
-	  printf("opp_corner at %d %d %d\n", st->x+xoppcorner, st->y+yoppcorner, st->t+toppcorner);
+	  printf("opp_corner at %d %d %d\n", xdisp+xoppcorner, ydisp+yoppcorner, tdisp+toppcorner);
 	  temp_vec1[i].real = 1.0;
 	  temp_vec1[i].imag = 0.0;
 	}
