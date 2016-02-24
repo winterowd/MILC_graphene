@@ -241,6 +241,7 @@ BOMB THE COMPILE
 	  //temp_vec1[i].real = st->g_rand.real;
 	  //temp_vec1[i].imag = st->g_rand.imag;
 	  printf("point_source at %d %d %d\n", st->x, st->y, st->t);
+	  printf("opp_corner at %d %d %d\n", st->x+xoppcorner, st->y+yoppcorner, st->t+toppcorner);
 	  temp_vec1[i].real = 1.0;
 	  temp_vec1[i].imag = 0.0;
 	}
