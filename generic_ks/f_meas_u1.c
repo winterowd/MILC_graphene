@@ -49,8 +49,8 @@ void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, i
     wait_gather(tag[1]);
 
     FORALLMYSITES(i, s) {
-      dest[i].real = *(complex *)gen_pt[1][i].real;
-      dest[i].imag = *(complex *)gen_pt[1][i].imag;
+      dest[i].real = (complex *)gen_pt[1][i].real;
+      dest[i].imag = (complex *)gen_pt[1][i].imag;
     }
 
   }
@@ -88,7 +88,7 @@ void three_link_shift_haldane(complex *src, complex *dest, complex *links, int *
 
   register int i, j;
   register site *s;
-  int *forward[3];
+  int forward[3];
   complex *tvec;
 
   tvec = (complex *)malloc(sites_on_node*sizeof(complex));
