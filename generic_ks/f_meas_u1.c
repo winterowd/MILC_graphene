@@ -279,7 +279,7 @@ BOMB THE COMPILE
 			       prec, fn );     
 
       //call routine to shift temp_vec1 and put result in temp_vec2
-      eta[0]=xcorner; eta[1]=ycorner; eta[2]=tcorner
+      eta[0]=xcorner; eta[1]=ycorner; eta[2]=tcorner;
       three_link_shift_haldane(temp_vec1, temp_vec2, links, eta);
 
       FORALLMYSITES(i,st) {
