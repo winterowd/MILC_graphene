@@ -153,9 +153,7 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     //complex *g_rand_temp, *temp_invert, *zzz;
     quark_invert_control qic;
     int my_volume;
-    int xdisp, ydisp, tdisp;
     int xcorner, ycorner, tcorner;
-    int xoppcorner, yoppcorner, toppcorner;
     int eta[3];
 #ifdef NPBP_REPS
     double pbp_pbp;
@@ -230,8 +228,7 @@ BOMB THE COMPILE
 
     for(jpbp_reps = 0; jpbp_reps < npbp_reps; jpbp_reps++){
 
-      for(xdisp=0; xdisp<nx; xdisp+=2) for(ydisp=0; ydisp<ny; ydisp+=2) for(tdisp=0; tdisp<nt; tdisp+=2) {
-            for(xcorner=0, xoppcorner=1; xcorner<2; xcorner++, xoppcorner--) for(ycorner=0, yoppcorner=1; ycorner<2; ycorner++, yoppcorner--) for(tcorner=0, toppcorner=1; tcorner<2; tcorner++, toppcorner--) {
+      for(xcorner=0; xcorner<2; xcorner++) for(ycorner=0; ycorner<2; ycorner++) for(tcorner=0; tcorner<2; tcorner++) {
       
       rfaction = (double)0.0;
       pbp_e = pbp_o = dcmplx((double)0.0,(double)0.0);
@@ -260,15 +257,9 @@ BOMB THE COMPILE
 	eta[0] = st->x - 2*((int)(st->x)/2);
 	eta[1] = st->y - 2*((int)(st->y)/2);
 	eta[2] = st->t - 2*((int)(st->t)/2);
-	//if( (eta[0]==xcorner) && (eta[1]==ycorner) && (eta[2]==tcorner) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
-	if( (st->x==(xdisp+xcorner)) && (st->y==(ydisp+ycorner)) && (st->t==(tdisp+tcorner)) && (st->z==0)) { 
-	  //temp_vec1[i].real = st->g_rand.real;
-	  //temp_vec1[i].imag = st->g_rand.imag;
-	  temp_vec1[i].real = 1.0;
-	  temp_vec1[i].imag = 0.0;
-	  printf("point_source at %d %d %d\n", st->x, st->y, st->t);
-          printf("opp_corner at %d %d %d\n", xdisp+xoppcorner, ydisp+yoppcorner, tdisp+toppcorner);
-	  printf("eta %d %d %d\n", eta[0], eta[1], eta[2]);
+	if( (eta[0]==xcorner) && (eta[1]==ycorner) && (eta[2]==tcorner) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
+	  temp_vec1[i].real = st->g_rand.real;
+	  temp_vec1[i].imag = st->g_rand.imag;
 	}
 	else {
 	  temp_vec1[i].real = 0.0;
@@ -288,12 +279,6 @@ BOMB THE COMPILE
       //call routine to shift temp_vec1 and put result in temp_vec2
       eta[0]=xcorner; eta[1]=ycorner; eta[2]=tcorner;
       three_link_shift_haldane(temp_vec1, temp_vec2, links, eta);
-
-      FORALLMYSITES(i,st) {
-        if((st->x==(xdisp+xoppcorner)) && (st->y==(ydisp+yoppcorner)) && (st->t==(tdisp+toppcorner))) {
-          printf("temp_vec2 %d %d %d %d %e %e\n", st->x, st->y, st->z, st->t, temp_vec2[i].real, temp_vec2[i].imag);
-        }
-      }
 
       //invert on shifted source
       mat_invert_uml_field_u1( temp_vec2, temp_vec3, &qic, mass, fn);
