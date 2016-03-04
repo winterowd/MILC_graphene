@@ -49,7 +49,9 @@ void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, i
     wait_gather(tag[1]);
 
     FORALLMYSITES(i, s) {
-      CMULREAL(*(complex *)gen_pt[1][i], 1.0, dest[i]);
+      //CMULREAL(*(complex *)gen_pt[1][i], 1.0, dest[i]);
+      dest[i].real = (*(* complex)gen_pt[1][i]).real;
+      dest[i].imag = (*(* complex)gen_pt[1][i]).imag;
     }
 
   }
