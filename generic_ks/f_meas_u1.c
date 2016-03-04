@@ -20,7 +20,7 @@
 
 #include "generic_ks_includes_u1.h"	/* definitions files and prototypes */
 
-void sym_shift_field(int dir, complex *src, complex *dest, complex *links) {
+void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, int forward) {
 
   register int i;
   register site *s;
@@ -28,26 +28,31 @@ void sym_shift_field(int dir, complex *src, complex *dest, complex *links) {
   complex *tvec;
 
   tvec = (complex *)malloc(sites_on_node*sizeof(complex));
-
-  tag[0] = start_gather_field( src, sizeof(complex), dir, EVENANDODD, gen_pt[0] );
-
-  FORALLMYSITES(i, s) {    
-    CMULJ_(links[4*i+dir], src[i], tvec[i]);
+  if(forward==1) {
+    
+    tag[0] = start_gather_field( src, sizeof(complex), dir, EVENANDODD, gen_pt[0] );
+    wait_gather(tag[0]);
+    
+    FORALLMYSITES(i, s) {
+      CMUL(links[4*i+dir], *(complex *)gen_pt[0][i], dest[i]);
+    }
   }
+  else{
+  
+    
+    FORALLMYSITES(i, s) {    
+      CMULJ_(links[4*i+dir], src[i], tvec[i]);
+    }
 
-  tag[1] = start_gather_field(tvec, sizeof(complex), OPP_DIR(dir), EVENANDODD, gen_pt[1]);
-  wait_gather(tag[0]);
-  FORALLMYSITES(i, s) {
-    CMUL(links[4*i+dir], *(complex *)gen_pt[0][i], dest[i]);
-  }
-  wait_gather(tag[1]);
+    tag[1] = start_gather_field(tvec, sizeof(complex), OPP_DIR(dir), EVENANDODD, gen_pt[1]);
+    
+    wait_gather(tag[1]);
 
-  FORALLMYSITES(i, s) {
-    CADD(dest[i], *(complex *)gen_pt[1][i], dest[i]); 
-  }
+    FORALLMYSITES(i, s) {
+      dest[i].real = *(complex *)gen_pt[1][i].real;
+      dest[i].imag = *(complex *)gen_pt[1][i].imag;
+    }
 
-  FORALLMYSITES(i, s) {
-    CMULREAL(dest[i], 0.5, dest[i]);
   }
 
   free(tvec);
@@ -56,7 +61,7 @@ void sym_shift_field(int dir, complex *src, complex *dest, complex *links) {
   
 }//sym_shift_field()
 
-void shift_field_path(int n, int *d, complex *src, complex *dest, complex *links) {
+void shift_field_path_haldane(int n, int *d, complex *src, complex *dest, complex *links, int *forward) {
 
   int i, j;
   site *s; 
@@ -66,9 +71,9 @@ void shift_field_path(int n, int *d, complex *src, complex *dest, complex *links
 
   for(j=0; j<n; j++) { //loop over path length
     if(j==0)
-      sym_shift_field(d[j], src, tvec, links);
+      shift_field_haldane(d[j], src, tvec, links, forward[j]);
     else
-      sym_shift_field(d[j], dest, tvec, links);
+      shift_field_haldane(d[j], dest, tvec, links, forward[j]);
     FORALLMYSITES(i, s) {
       dest[i].real = tvec[i].real;
       dest[i].imag = tvec[i].imag;
@@ -79,10 +84,11 @@ void shift_field_path(int n, int *d, complex *src, complex *dest, complex *links
 
 }//shift_field_path()
 
-void three_link_shift(complex *src, complex *dest, complex *links) {
+void three_link_shift_haldane(complex *src, complex *dest, complex *links, int *eta) {
 
   register int i, j;
   register site *s;
+  int *forward[3];
   complex *tvec;
 
   tvec = (complex *)malloc(sites_on_node*sizeof(complex));
@@ -98,11 +104,18 @@ void three_link_shift(complex *src, complex *dest, complex *links) {
 	  {{YUP,XUP,TUP},+1.0/6.0},
 	  {{TUP,YUP,XUP},+1.0/6.0}}; /* The factor of 6 accounts for the *
 				* multiplicity of the permutations */
+  for(i=0; i<3; i++) {
+    if(eta[i]==0)
+      forward[i]=1;
+    else
+      forward[i]=0;
+  }
+  
   FORALLSITES(i, s) {
     dest[i].real = dest[i].imag = 0.;
   }
   for(j=0; j<6; j++) { //loop over paths
-    shift_field_path(3, p[j].d, src, tvec, links);
+    shift_field_path_haldane(3, p[j].d, src, tvec, links, forward);
     FORALLMYSITES(i, s) {
       CMULREAL(tvec[i], p[j].sign, tvec[i]);
       CADD(dest[i], tvec[i], dest[i]);
@@ -134,6 +147,9 @@ void f_meas_imp_u1( field_offset phi_off, field_offset xxx_off, Real mass,
     quark_invert_control qic;
     int my_volume;
     int xdisp, ydisp, tdisp;
+    int xcorner, ycorner, tcorner;
+    int xoppcorner, yoppcorner, toppcorner;
+    int eta[3];
 #ifdef NPBP_REPS
     double pbp_pbp;
 #endif
@@ -207,8 +223,9 @@ BOMB THE COMPILE
 
     for(jpbp_reps = 0; jpbp_reps < npbp_reps; jpbp_reps++){
 
-      for(xdisp=0; xdisp<nx; xdisp+=sep) for(ydisp=0; ydisp<ny; ydisp+=sep) for(tdisp=0; tdisp<nt; tdisp+=sep) {
-
+      for(xdisp=0; xdisp<nx; xdisp+=2) for(ydisp=0; ydisp<ny; ydisp+=2) for(tdisp=0; tdisp<nt; tdisp+=2) {
+            for(xcorner=0, xoppcorner=1; xcorner<2; xcorner++, xoppcorner--) for(ycorner=0, yoppcorner=1; ycorner<2; ycorner++, yoppcorner--) for(tcorner=0, toppcorner=1; tcorner<2; tcorner++, toppcorner--) {
+      
       rfaction = (double)0.0;
       pbp_e = pbp_o = dcmplx((double)0.0,(double)0.0);
       haldane_e = haldane_o = dcmplx((double)0.0,(double)0.0);
@@ -233,9 +250,18 @@ BOMB THE COMPILE
       //z2rsource_imp( phi_off, mass, EVENANDODD, fn ); LEAVE OUT FOR NOW 10/10
 #endif
       FORALLSITES(i,st) { //copy g_rand to temp_vec1, clear temp_vec2 and temp_vec3
-	if( (st->x==xdisp) && (st->y==ydisp) && (st->t==tdisp) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
+	eta[0] = st->x - 2*((int)(st->x)/2);
+	eta[1] = st->y - 2*((int)(st->y)/2);
+	eta[2] = st->t - 2*((int)(st->t)/2);
+	//if( (eta[0]==xcorner) && (eta[1]==ycorner) && (eta[2]==tcorner) && (st->z==0)) { //only do source at one corner of cube for now (02/04/16)
+	if( (st->x==(xdisp+xcorner)) && (st->y==(ydisp+ycorner)) && (st->t==(tdisp+tcorner)) && (st->z==0)) { 
+	  //temp_vec1[i].real = st->g_rand.real;
+	  //temp_vec1[i].imag = st->g_rand.imag;
 	  temp_vec1[i].real = 1.0;
 	  temp_vec1[i].imag = 0.0;
+	  printf("point_source at %d %d %d\n", st->x, st->y, st->t);
+          printf("opp_corner at %d %d %d\n", xdisp+xoppcorner, ydisp+yoppcorner, tdisp+toppcorner);
+	  printf("eta %d %d %d\n", eta[0], eta[1], eta[2]);
 	}
 	else {
 	  temp_vec1[i].real = 0.0;
@@ -253,13 +279,15 @@ BOMB THE COMPILE
 			       prec, fn );     
 
       //call routine to shift temp_vec1 and put result in temp_vec2
-      three_link_shift(temp_vec1, temp_vec2, links);
-      FORALLSITES(i,st) {
-	if((st->x!=(xdisp+1)) || (st->y!=(ydisp+1)) || (st->t!=(tdisp+1))) {
-	  temp_vec2[i].real = 0.0;
-	  temp_vec2[i].imag = 0.0;
-	}
+      eta[0]=xcorner; eta[1]=ycorner; eta[2]=tcorner
+      three_link_shift_haldane(temp_vec1, temp_vec2, links, eta);
+
+      FORALLMYSITES(i,st) {
+        if((st->x==(xdisp+xoppcorner)) && (st->y==(ydisp+yoppcorner)) && (st->t==(tdisp+toppcorner))) {
+          printf("temp_vec2 %d %d %d %d %e %e\n", st->x, st->y, st->z, st->t, temp_vec2[i].real, temp_vec2[i].imag);
+        }
       }
+      
       //invert on shifted source
       mat_invert_uml_field_u1( temp_vec2, temp_vec3, &qic, mass, fn);
       
@@ -475,10 +503,10 @@ BOMB THE COMPILE
       i_psi_bar_psi_odd =  pbp_o.imag*(2.0/(double)my_volume) ;
       r_psi_bar_psi_even =  pbp_e.real*(2.0/(double)my_volume) ;
       i_psi_bar_psi_even =  pbp_e.imag*(2.0/(double)my_volume) ;
-      r_haldane_odd =  haldane_o.real;
-      i_haldane_odd =  haldane_o.imag;
-      r_haldane_even =  haldane_e.real;
-      i_haldane_even =  haldane_e.imag;
+      r_haldane_odd =  haldane_o.real*(1.0/(double)my_volume);
+      i_haldane_odd =  haldane_o.imag*(1.0/(double)my_volume);
+      r_haldane_even =  haldane_e.real*(1.0/(double)my_volume);
+      i_haldane_even =  haldane_e.imag*(1.0/(double)my_volume);
       r_ferm_action =  rfaction*(1.0/(double)my_volume) ;
       node0_printf("PBP: mass %e     %e  %e  %e  %e ( %d of %d )\n", mass,
 		   r_psi_bar_psi_even, r_psi_bar_psi_odd,
@@ -617,7 +645,7 @@ BOMB THE COMPILE
       cleanup_gather(tag3);
 #endif
       }
-
+      }
     }
 
       free(temp_vec1);
