@@ -36,6 +36,7 @@ void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, i
     FORALLMYSITES(i, s) {
       CMUL(links[4*i+dir], *(complex *)gen_pt[0][i], dest[i]);
     }
+    cleanup_gather(tag[0]);
   }
   else{
   
@@ -51,13 +52,11 @@ void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, i
     FORALLMYSITES(i, s) {
       CMULREAL(*(complex *)gen_pt[1][i], 1.0, dest[i]);
     }
-
+    cleanup_gather(tag[1]);
   }
   printf("HI end shift_field_haldane\n");
   free(tvec);
-  cleanup_gather(tag[0]);
-  cleanup_gather(tag[1]);
-  
+    
 }//sym_shift_field()
 
 void shift_field_path_haldane(int n, int *d, complex *src, complex *dest, complex *links, int *forward) {
@@ -67,7 +66,7 @@ void shift_field_path_haldane(int n, int *d, complex *src, complex *dest, comple
   complex *tvec;
   
   tvec = (complex *)malloc(sites_on_node*sizeof(complex));
-  printf("HI shift_field_path_haldane %d %d %d\n", d[0], d[1], d[1]);
+  printf("HI shift_field_path_haldane %d %d %d\n", d[0], d[1], d[2]);
   for(j=0; j<n; j++) { //loop over path length
     if(j==0)
       shift_field_haldane(d[j], src, tvec, links, forward[j]);
