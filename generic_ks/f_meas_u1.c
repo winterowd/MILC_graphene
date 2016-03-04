@@ -90,6 +90,7 @@ void three_link_shift_haldane(complex *src, complex *dest, complex *links, int *
 
   register int i, j;
   register site *s;
+  int index;
   int forward[3];
   complex *tvec;
 
@@ -106,17 +107,21 @@ void three_link_shift_haldane(complex *src, complex *dest, complex *links, int *
 	  {{YUP,XUP,TUP},+1.0/6.0},
 	  {{TUP,YUP,XUP},+1.0/6.0}}; /* The factor of 6 accounts for the *
 				* multiplicity of the permutations */
-  for(i=0; i<3; i++) {
-    if(eta[i]==0)
-      forward[i]=0;
-    else
-      forward[i]=1;
-  }
   
   FORALLSITES(i, s) {
     dest[i].real = dest[i].imag = 0.;
   }
   for(j=0; j<6; j++) { //loop over paths
+    for(i=0; i<3; i++) {
+      if(p[j].d[i] == TUP)
+	index=p[j].d[i]-1;
+      else
+	index=p[j].d[i];
+      if(eta[index] == 1)
+	  forward[i] = 1;
+	else
+	  forward[i] = 0;
+    }
     shift_field_path_haldane(3, p[j].d, src, tvec, links, forward);
     FORALLMYSITES(i, s) {
       CMULREAL(tvec[i], p[j].sign, tvec[i]);
