@@ -36,8 +36,8 @@ void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, i
     FORALLMYSITES(i, s) {
       CMUL(links[4*i+dir], *(complex *)gen_pt[0][i], dest[i]);
       CMULREAL(dest[i], 0.5, dest[i]);
-      if(dest[i].real != 0.0 || dest[i].imag != 0.0)
-	printf("nonzero shifted source: %e %e at %d %d %d\n", dest[i].real, dest[i].imag, s->x, s->y, s->t);
+      /*if(dest[i].real != 0.0 || dest[i].imag != 0.0)
+	printf("nonzero shifted source: %e %e at %d %d %d\n", dest[i].real, dest[i].imag, s->x, s->y, s->t);*/
     }
     cleanup_gather(tag[0]);
   }
@@ -53,8 +53,8 @@ void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, i
 
     FORALLMYSITES(i, s) {
       CMULREAL(*(complex *)gen_pt[1][i], 0.5, dest[i]);
-      if(dest[i].real != 0.0 || dest[i].imag != 0.0)
-	printf("nonzero shifted source: %e %e at %d %d %d\n", dest[i].real, dest[i].imag, s->x, s->y, s->t);
+      /*if(dest[i].real != 0.0 || dest[i].imag != 0.0)
+	printf("nonzero shifted source: %e %e at %d %d %d\n", dest[i].real, dest[i].imag, s->x, s->y, s->t);*/
     }
     cleanup_gather(tag[1]);
   }
