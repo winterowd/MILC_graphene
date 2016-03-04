@@ -26,7 +26,7 @@ void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, i
   register site *s;
   msg_tag *tag[2];
   complex *tvec;
-
+  printf("HI shift_field_haldane %d %d\n", dir, forward);
   tvec = (complex *)malloc(sites_on_node*sizeof(complex));
   if(forward==1) {
     
@@ -53,7 +53,7 @@ void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, i
     }
 
   }
-
+  printf("HI end shift_field_haldane\n");
   free(tvec);
   cleanup_gather(tag[0]);
   cleanup_gather(tag[1]);
@@ -67,7 +67,7 @@ void shift_field_path_haldane(int n, int *d, complex *src, complex *dest, comple
   complex *tvec;
   
   tvec = (complex *)malloc(sites_on_node*sizeof(complex));
-
+  printf("HI shift_field_path_haldane %d %d %d\n", d[0], d[1], d[1]);
   for(j=0; j<n; j++) { //loop over path length
     if(j==0)
       shift_field_haldane(d[j], src, tvec, links, forward[j]);
@@ -109,7 +109,7 @@ void three_link_shift_haldane(complex *src, complex *dest, complex *links, int *
     else
       forward[i]=0;
   }
-  
+  printf("HI three_link_shift_haldane\n");
   FORALLSITES(i, s) {
     dest[i].real = dest[i].imag = 0.;
   }
