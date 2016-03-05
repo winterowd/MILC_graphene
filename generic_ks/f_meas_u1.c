@@ -38,7 +38,6 @@ void shift_field_haldane(int dir, complex *src, complex *dest, complex *links, i
     cleanup_gather(tag[0]);
   }
   else{
-    //printf("BACKWARD:\n");
     FORALLMYSITES(i, s) {    
       CMULJ_(links[4*i+dir], src[i], tvec[i]);
     }
@@ -631,7 +630,7 @@ BOMB THE COMPILE
       cleanup_gather(tag3);
 #endif
       }
-      }
+     
     }
 
       free(temp_vec1);
